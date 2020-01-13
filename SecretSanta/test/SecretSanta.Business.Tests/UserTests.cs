@@ -27,21 +27,21 @@ namespace SecretSanta.Business.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Create_FirstNameNull_ThrowArguementNullException()
         {
-            _ = new User(1, null, "lastName", new List<Gift>());
+            _ = new User(1, null!, "lastName", new List<Gift>());
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Create_LastNameNull_ThrowArguementNullException()
         {
-            _ = new User(1, "firstName", null, new List<Gift>());
+            _ = new User(1, "firstName", null!, new List<Gift>());
         }
         
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Create_GiftsNull_ThrowArguementNullException()
         {
-            _ = new User(1, "firstName", "lastName", null);
+            _ = new User(1, "firstName", "lastName", null!);
         }
     }
 }

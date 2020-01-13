@@ -31,7 +31,7 @@ namespace SecretSanta.Business.Tests
         {
             var user = new User(1, "firstName", "LastName", new List<Gift>());
            
-            _ = new Gift(1, null, "description", "url", user);
+            _ = new Gift(1, null!, "description", "url", user);
 
         }
 
@@ -41,7 +41,7 @@ namespace SecretSanta.Business.Tests
         {
             var user = new User(1, "firstName", "lastName", new List<Gift>());
             
-            _ = new Gift(1, "title", null, "url", user);
+            _ = new Gift(1, "title", null!, "url", user);
         }
   
         [TestMethod]
@@ -50,14 +50,14 @@ namespace SecretSanta.Business.Tests
         {
             var user = new User(1, "firstName", "lastName", new List<Gift>());
             
-            _ = new Gift(1, "title", "descripton", null, user);
+            _ = new Gift(1, "title", "descripton", null!, user);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Create_UserNull_ThrowArguementNullException()
         {
-            _ = new Gift(1, "title", "descripton", "url", null);
+            _ = new Gift(1, "title", "descripton", "url", null!);
         }
 
     }
