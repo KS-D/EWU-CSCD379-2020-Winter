@@ -18,11 +18,9 @@ namespace SecretSanta.Business
             get => _LastName;
             set => _LastName = value ?? throw new ArgumentNullException(nameof(value));
         }
-        private ICollection<Gift> _Gifts = null!;
         public ICollection<Gift> Gifts 
         { 
-            get => _Gifts;
-            set => _Gifts = value ?? throw new ArgumentNullException(nameof(value));
+            get;
         }
 
         public User(int id, string firstName, string lastName, ICollection<Gift> gifts)
@@ -30,7 +28,7 @@ namespace SecretSanta.Business
             Id = id;
             FirstName = firstName;
             LastName = lastName;
-            Gifts = gifts;
+            Gifts = gifts ?? throw new ArgumentNullException(nameof(gifts));
         }
     }
 }
