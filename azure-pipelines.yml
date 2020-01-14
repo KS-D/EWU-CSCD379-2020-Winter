@@ -17,6 +17,12 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+- task: UseDotNet@2 
+  displayName: ".NET Core 3.1.x"
+  inputs:
+    version: '3.1.x'
+    packageType: sdk
+
 - task: DotNetCoreCLI@2
   displayName: Nuget Install  
   inputs:
