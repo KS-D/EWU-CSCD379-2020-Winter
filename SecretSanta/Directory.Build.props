@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Nullable Condition="$(Nullability)==''">enable</Nullable>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 </Project>

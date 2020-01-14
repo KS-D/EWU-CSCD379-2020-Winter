@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 
+[assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]
 namespace SecretSanta.Business.Tests
 {
     [TestClass]
