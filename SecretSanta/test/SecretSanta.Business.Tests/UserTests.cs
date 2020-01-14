@@ -32,7 +32,7 @@ namespace SecretSanta.Business.Tests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void Create_LastNameNull_ThrowArguementNullException()
+        public void Create_LastNameNull_ThrowArguemenGiftTeststNullException()
         {
             _ = new User(1, "firstName", null!, new List<Gift>());
         }

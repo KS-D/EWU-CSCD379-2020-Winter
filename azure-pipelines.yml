@@ -18,18 +18,20 @@ variables:
 
 steps:
 - task: DotNetCoreCLI@2
+  displayName: Nuget Install  
   inputs:
     command: restore
-    projects: '**/*.sln'
+    projects: '$(solution)'
 
 - task: DotNetCoreCLI@2
   displayName: Build
   inputs:
     command: build
     projects: '**/*.sln'
-    arguments: '--configuration Release'
+    arguments: '--configuration $(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
+  displayName: Test
   inputs:
     command: test
     projects: '**/*Tests/*.csproj'
