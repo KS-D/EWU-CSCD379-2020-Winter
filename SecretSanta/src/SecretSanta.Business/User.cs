@@ -12,15 +12,20 @@ namespace SecretSanta.Business
             get => _FirstName;
             set => _FirstName = value ?? throw new ArgumentNullException(nameof(value));
         }
+
         private string _LastName = null!;
         public string LastName 
         {
             get => _LastName;
             set => _LastName = value ?? throw new ArgumentNullException(nameof(value));
         }
+
+        private ICollection<Gift> _Gifts = null!;
         public ICollection<Gift> Gifts 
-        { 
-            get;
+        {
+            get => _Gifts;
+            set => _Gifts = value ?? throw new ArgumentNullException(nameof(value));
+
         }
 
         public User(int id, string firstName, string lastName, ICollection<Gift> gifts)

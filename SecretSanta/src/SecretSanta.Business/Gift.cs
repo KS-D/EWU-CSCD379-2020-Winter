@@ -5,18 +5,21 @@ namespace SecretSanta.Business
     public class Gift
     {
         public int Id { get; }
+        
         private string _Title = null!;
         public string Title 
         { 
             get => _Title;
             set => _Title = value ?? throw new ArgumentNullException(nameof(value));
         }
+
         private string _Description = null!;
         public string Description 
         { 
             get => _Description;
             set => _Description = value ?? throw new ArgumentNullException(nameof(value));
         }
+
         private string _Url = null!;
         public string Url 
         {
