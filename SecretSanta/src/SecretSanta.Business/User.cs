@@ -5,7 +5,7 @@ namespace SecretSanta.Business
 {
     public class User
     {
-        public int Id { get; set; }
+        public int Id { get; }
         private string _FirstName = null!;
         public string FirstName 
         {
@@ -21,7 +21,7 @@ namespace SecretSanta.Business
         }
 
         private ICollection<Gift> _Gifts = null!;
-        public ICollection<Gift> Gifts 
+        public ICollection<Gift> Gifts
         {
             get => _Gifts;
             set => _Gifts = value ?? throw new ArgumentNullException(nameof(value));

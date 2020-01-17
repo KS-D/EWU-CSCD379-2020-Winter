@@ -7,41 +7,41 @@ namespace SecretSanta.Business.Tests
     [TestClass]
     public class UserTests
     {
+        private const int Id = 131;
+        private const string FirstName = "Firstname";
+        private const string LastName = "Lastname";
+        private readonly List<Gift> _Gifts = new List<Gift>();
+
         [TestMethod]
         public void Create_User_Success()
         {
-            int id = 131;
-            string firstName = "FirstName";
-            string lastName = "LastName";
-            var gifts = new List<Gift>();
+            var user = new User(Id, FirstName, LastName, _Gifts);
 
-            var user = new User(id, firstName, lastName, gifts);
-
-            Assert.AreEqual(id, user.Id);
-            Assert.AreEqual(firstName, user.FirstName);
-            Assert.AreEqual(lastName, user.LastName);
+            Assert.AreEqual(Id, user.Id);
+            Assert.AreEqual(FirstName, user.FirstName);
+            Assert.AreEqual(LastName, user.LastName);
             Assert.AreEqual(0, user.Gifts.Count);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void Create_FirstNameNull_ThrowArguementNullException()
-        {
-            _ = new User(1, null!, "lastName", new List<Gift>());
+        public void Create_FirstNameNull_ThrowArgumentNullException()
+        { 
+            _ = new User(Id, null!, LastName, _Gifts);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void Create_LastNameNull_ThrowArguemenGiftTeststNullException()
+        public void Create_LastNameNull_ThrowArgumentGiftTestsNullException()
         {
-            _ = new User(1, "firstName", null!, new List<Gift>());
+            _ = new User(Id, FirstName, null!,_Gifts);
         }
         
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void Create_GiftsNull_ThrowArguementNullException()
+        public void Create_GiftsNull_ThrowArgumentNullException()
         {
-            _ = new User(1, "firstName", "lastName", null!);
+            _ = new User(Id, FirstName, LastName, null!);
         }
     }
 }

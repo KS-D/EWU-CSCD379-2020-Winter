@@ -2,63 +2,60 @@
 using System;
 using System.Collections.Generic;
 
-[assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]
 namespace SecretSanta.Business.Tests
 {
     [TestClass]
     public class GiftTests
-    {
+    { 
+        private const int Id = 1;
+        private const string Title = "fancy gift";
+        private const string Description = "fancy gift description";
+        private const string Url = "www.fancyGift.com";
+        private readonly User _User = new User(1, "firstName", "LastName", new List<Gift>());       
+        
         [TestMethod]
         public void Create_Gift_Success()
         {
-            int id = 1;
-            string title = "fancy gift";
-            string desctription = "fancy gift description";
-            string url = "www.fancyGift.com";
-            User user = new User(1, "firstName", "LastName", new List<Gift>());
 
-            Gift gift = new Gift(id, title, desctription, url, user);
+            Gift gift = new Gift(Id, Title, Description, Url, _User);
 
-            Assert.AreEqual(id, gift.Id);
-            Assert.AreEqual(title, gift.Title);
-            Assert.AreEqual(desctription, gift.Description);
-            Assert.AreEqual(url, gift.Url);
-            Assert.AreEqual(user, gift.User);
+            Assert.AreEqual(Id, gift.Id);
+            Assert.AreEqual(Title, gift.Title);
+            Assert.AreEqual(Description, gift.Description);
+            Assert.AreEqual(Url, gift.Url);
+            Assert.AreEqual(_User.Id, gift.User.Id);
+            Assert.AreEqual(_User.FirstName, gift.User.FirstName);
+            Assert.AreEqual(_User.LastName, gift.User.LastName);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void Create_TitleNull_ThrowArguementNullException()
+        public void Create_TitleNull_ThrowArgumentNullException()
         {
-            var user = new User(1, "firstName", "LastName", new List<Gift>());
            
-            _ = new Gift(1, null!, "description", "url", user);
+            _ = new Gift(Id, null!, Description, Url, _User);
 
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void Create_DescriptionNull_ThrowArguementNullException()
+        public void Create_DescriptionNull_ThrowArgumentNullException()
         {
-            var user = new User(1, "firstName", "lastName", new List<Gift>());
-            
-            _ = new Gift(1, "title", null!, "url", user);
+            _ = new Gift(Id, Title, null!, Url, _User);
         }
   
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void Create_URLNull_ThrowArguementNullException()
+        public void Create_URLNull_ThrowArgumentNullException()
         {
-            var user = new User(1, "firstName", "lastName", new List<Gift>());
-            
-            _ = new Gift(1, "title", "descripton", null!, user);
+            _ =new Gift(Id, Title, Description, null!, _User);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void Create_UserNull_ThrowArguementNullException()
-        {
-            _ = new Gift(1, "title", "descripton", "url", null!);
+        public void Create_UserNull_ThrowArgumentNullException()
+        { 
+            _ = new Gift(Id, Title, Description, Url, null!);
         }
 
     }
