@@ -16,10 +16,9 @@ namespace SecretSanta.Data
             set => _Gifts = value ?? throw new ArgumentNullException(nameof(Gifts)); 
 
         }
+        public User? Santa { get; set; } 
         #nullable  disable
         public List<GroupUser> GroupUsers { get; set; }        
         #nullable  enable
-        
-        public User? Santa { get; set; } 
     }
 }

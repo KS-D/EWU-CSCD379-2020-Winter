@@ -29,7 +29,7 @@ namespace SecretSanta.Data
             modelBuilder?.Entity<GroupUser>().HasKey(gu => new {gu.GroupId, gu.UserId});
 
             modelBuilder?.Entity<GroupUser>()
-                .HasOne(gu => gu.Group)
+                .HasOne(u => u.User)
                 .WithMany(gu => gu.GroupUsers)
                 .HasForeignKey(u => u.UserId);
 
