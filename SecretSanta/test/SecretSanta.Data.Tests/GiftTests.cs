@@ -1,7 +1,10 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 
 namespace SecretSanta.Data.Tests
 {
@@ -14,6 +17,7 @@ namespace SecretSanta.Data.Tests
                     Url = "url",
                     Description = "a nice gift",
                     User = new User()
+
                 };
 
         [TestMethod]
@@ -39,5 +43,73 @@ namespace SecretSanta.Data.Tests
             }
         }
 
+        [TestMethod]
+        public async Task Create_Gift_ShouldSetFingerPrintOnInitialSave()
+        {
+            var httpContextAccessor = Mock.Of<IHttpContextAccessor>(hta => 
+                hta.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == new Claim(ClaimTypes.NameIdentifier, "kyle"));
+
+            var giftId = -1;
+
+            using (var applicationDbContext = new ApplicationDbContext(Options, httpContextAccessor))
+            {
+                applicationDbContext.Gifts.Add(_Gift);
+                await applicationDbContext.SaveChangesAsync();
+
+                giftId = _Gift.Id;
+            }
+            
+            using (var applicationDbContext = new ApplicationDbContext(Options, httpContextAccessor))
+            {
+                var gift = await applicationDbContext.Gifts.Where(g => g.Id == giftId).SingleOrDefaultAsync();
+                
+                Assert.IsNotNull(gift);
+                Assert.AreEqual("kyle", gift.CreatedBy);
+                Assert.AreEqual("kyle", gift.ModifiedBy);
+
+            }
+        }
+
+        [TestMethod]
+        public async Task Create_Gift_ShouldSetFingerPrintOnUpdateSave()
+        {
+            var httpContextAccessor = Mock.Of<IHttpContextAccessor>(hta => 
+                hta.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == new Claim(ClaimTypes.NameIdentifier, "kyle"));
+
+            var giftId = -1;
+
+            using (var applicationDbContext = new ApplicationDbContext(Options, httpContextAccessor))
+            {
+                applicationDbContext.Gifts.Add(_Gift);
+                await applicationDbContext.SaveChangesAsync();
+
+                giftId = _Gift.Id;
+            }
+            
+            httpContextAccessor = Mock.Of<IHttpContextAccessor>(hta => 
+                hta.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == new Claim(ClaimTypes.NameIdentifier, "TotallyNotKyle"));
+            
+            using (var applicationDbContext = new ApplicationDbContext(Options, httpContextAccessor))
+            {
+                var gift = await applicationDbContext.Gifts.Where(a => a.Id == giftId).SingleOrDefaultAsync();
+                gift.Title = "A New Title";
+                gift.Description = "totally different gift";
+
+                await applicationDbContext.SaveChangesAsync();
+            }
+            
+            using (var applicationDbContext = new ApplicationDbContext(Options, httpContextAccessor))
+            {
+                var gift = await applicationDbContext.Gifts.Where(g => g.Id == giftId).SingleOrDefaultAsync();
+                
+                Assert.IsNotNull(gift);
+                Assert.AreEqual("A New Title", gift.Title);
+                Assert.AreEqual("totally different gift", gift.Description);
+                Assert.AreEqual("kyle", gift.CreatedBy);
+                Assert.AreEqual("TotallyNotKyle", gift.ModifiedBy);
+                Assert.IsTrue(gift.ModifiedOn > gift.CreatedOn);
+
+            }
+        }
     }
 }

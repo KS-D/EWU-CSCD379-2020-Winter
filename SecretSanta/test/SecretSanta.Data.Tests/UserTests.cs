@@ -14,7 +14,7 @@ namespace SecretSanta.Data.Tests
           FirstName = "Kyle",
           LastName = "Smith",
           Gifts = new List<Gift>(),
-          UserGroups = new List<GroupUser>()
+          GroupUsers = new List<GroupUser>()
         };
        
         [TestMethod]

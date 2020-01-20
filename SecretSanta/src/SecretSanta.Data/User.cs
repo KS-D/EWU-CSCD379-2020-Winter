@@ -17,7 +17,7 @@ namespace SecretSanta.Data
 
         }
         #nullable  disable
-        public List<GroupUser> UserGroups { get; set; }        
+        public List<GroupUser> GroupUsers { get; set; }        
         #nullable  enable
         
         public User? Santa { get; set; } 
