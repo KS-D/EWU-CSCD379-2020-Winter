@@ -13,7 +13,7 @@ namespace SecretSanta.Data.Tests
     public class GroupUserTests : TestBase
     {
         [TestMethod]
-        public async Task Create_GroupUser_WithMultipleUsersAndGroups()
+        public async Task Create_GroupUser_WithMultipleGroups()
         {
            IHttpContextAccessor httpContextAccessor = Mock.Of<IHttpContextAccessor>(hta => 
                hta.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == new Claim(ClaimTypes.NameIdentifier, "kyle"));
@@ -38,27 +38,35 @@ namespace SecretSanta.Data.Tests
            var groupUser2 = new GroupUser { User = user, Group = group2 };
 
            var groupUsers = new List<GroupUser>{ groupUser1, groupUser2 };
-
-           user.GroupUsers = groupUsers;
+           
            gift.User = user;
-
+           user.Gifts = new List<Gift>{ gift };
+           user.GroupUsers = groupUsers;
+           
            using (ApplicationDbContext dbContext = new ApplicationDbContext(Options, httpContextAccessor))
            {
-               dbContext.Gifts.Add(gift);
+               dbContext.Users.Add(user);
                await dbContext.SaveChangesAsync();
            }
 
 
            using (ApplicationDbContext dbContext = new ApplicationDbContext(Options, httpContextAccessor))
            {
-               var giftFromDb = await dbContext.Gifts.Where(g => g.Id == gift.Id).Include(g => g.User)
-                   .ThenInclude(gu => gu.GroupUsers).ThenInclude(g => g.Group).SingleOrDefaultAsync();
+               var UserFromDb = await dbContext.Users.Where(u => u.Id == user.Id).Include(u => u.Gifts)
+                   .Include(u => u.GroupUsers).ThenInclude(g => g.Group).SingleOrDefaultAsync();
 
-               Assert.IsNotNull(giftFromDb);
-               Assert.AreEqual(gift.Title, giftFromDb.Title);
-               Assert.AreEqual(gift.Description, giftFromDb.Description);
-               Assert.AreEqual(gift.Url, giftFromDb.Url);
-               Assert.AreEqual(user.Id, giftFromDb.User.Id);
+               var giftOnUser = UserFromDb.Gifts.ElementAt(0);
+
+               Assert.IsNotNull(UserFromDb);
+               Assert.AreEqual(user.FirstName, UserFromDb.FirstName);
+               Assert.AreEqual(user.LastName, UserFromDb.LastName);
+               Assert.AreEqual(1, UserFromDb.Gifts.Count);
+               Assert.AreEqual(user.Id, UserFromDb.Id);
+               Assert.AreEqual(gift.Url, giftOnUser.Url);
+               Assert.AreEqual(gift.Title, giftOnUser.Title);
+               Assert.AreEqual(gift.Description, giftOnUser.Description);
+               Assert.IsNotNull(user.GroupUsers[0]);
+               Assert.IsNotNull(user.GroupUsers[1]);
                CollectionAssert.AreEqual(user.GroupUsers, gift.User.GroupUsers);
            }
         }
