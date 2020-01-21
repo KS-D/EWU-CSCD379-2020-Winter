@@ -19,7 +19,7 @@ namespace SecretSanta.Data.Tests
           Gifts = new List<Gift>(),
           GroupUsers = new List<GroupUser>()
         };
-       
+
         [TestMethod]
         public async Task Create_User_DatabaseShouldSaveUser()
         {
@@ -77,7 +77,7 @@ namespace SecretSanta.Data.Tests
 
             var userId = -1;
             const string updatedFirstName = "TotallyNotKyle";
-            const string updatedLastName = "TotallyNotKyle";
+            const string updatedLastName = "TotallyNotSmith";
             
             using (var applicationDbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
