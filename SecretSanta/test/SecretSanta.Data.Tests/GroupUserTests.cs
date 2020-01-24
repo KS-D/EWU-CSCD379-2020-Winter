@@ -17,7 +17,6 @@ namespace SecretSanta.Data.Tests
             {
                 FirstName = "kyle",
                 LastName = "Smith",
-                GroupUsers = new List<GroupUser>()
             };
 
         private readonly Gift _Gift = new Gift
@@ -43,7 +42,7 @@ namespace SecretSanta.Data.Tests
             
             _Gift.User = _User;
             _User.Gifts = new List<Gift>{ _Gift };
-            _User.GroupUsers = groupUsers;
+            _User.GroupUsers.AddRange(groupUsers);
            
             using (ApplicationDbContext dbContext = new ApplicationDbContext(Options, httpContextAccessor))
             { 
@@ -97,8 +96,8 @@ namespace SecretSanta.Data.Tests
             
             _Gift.User = _User;
             _User.Gifts = new List<Gift>{ _Gift };
-            _User.GroupUsers = groupUsers;
-            user2.GroupUsers = groupUsers2;
+            _User.GroupUsers.AddRange(groupUsers);
+            user2.GroupUsers.AddRange(groupUsers2);
            
             using (ApplicationDbContext dbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -46,8 +47,7 @@ namespace SecretSanta.Data
             return base.SaveChanges();
         }
 
-        public override Task<int> SaveChangesAsync(
-            System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             AddFingerPrinting();
             return base.SaveChangesAsync(cancellationToken);
@@ -74,7 +74,7 @@ namespace SecretSanta.Data
                 if (entry.Entity is FingerPrintEntityBase fingerPrintEntry)
                 { 
                     fingerPrintEntry.ModifiedOn = DateTime.UtcNow;
-                    fingerPrintEntry.ModifiedBy = HttpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value ?? "";                           
+                    fingerPrintEntry.ModifiedBy = HttpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value ?? "";
                 }
             }
 

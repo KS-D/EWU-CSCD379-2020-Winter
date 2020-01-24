@@ -10,8 +10,9 @@ namespace SecretSanta.Data
         private string _Description = string.Empty;
         public string Url { get => _Url; set => _Url = value ?? throw new ArgumentNullException(nameof(Url)); }
         private string _Url = string.Empty;
-        #nullable disable
+
+#nullable disable //CS8616 Non-nullable property is uninitialized
         public User User { get; set; }
-        #nullable enable
+#nullable enable
     }
 }
