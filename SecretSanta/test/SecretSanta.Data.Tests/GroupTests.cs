@@ -34,7 +34,7 @@ namespace SecretSanta.Data.Tests
 
             using (var applicationDbContext = new ApplicationDbContext(Options))
             {
-                var group = await applicationDbContext.Groups.Where(u => u.Id == groupId).SingleOrDefaultAsync();
+                Group group = await applicationDbContext.Groups.Where(u => u.Id == groupId).SingleOrDefaultAsync();
                 
                 Assert.IsNotNull(group);
                 Assert.AreEqual(_Group.Name, group.Name);
@@ -59,7 +59,7 @@ namespace SecretSanta.Data.Tests
             
             using (var applicationDbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
-                var group = await applicationDbContext.Groups.Where(g => g.Id == groupId).SingleOrDefaultAsync();
+                Group group = await applicationDbContext.Groups.Where(g => g.Id == groupId).SingleOrDefaultAsync();
                 
                 Assert.IsNotNull(group);
                 Assert.AreEqual("kyle", group.CreatedBy);
@@ -92,7 +92,7 @@ namespace SecretSanta.Data.Tests
             
             using (var applicationDbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
-                var group = await applicationDbContext.Groups.Where(g => g.Id == groupId).SingleOrDefaultAsync();
+                Group group = await applicationDbContext.Groups.Where(g => g.Id == groupId).SingleOrDefaultAsync();
                 group.Name = updatedName;
 
                 await applicationDbContext.SaveChangesAsync();
@@ -100,7 +100,7 @@ namespace SecretSanta.Data.Tests
             
             using (var applicationDbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
-                var group = await applicationDbContext.Groups.Where(g => g.Id == groupId).SingleOrDefaultAsync();
+                Group group = await applicationDbContext.Groups.Where(g => g.Id == groupId).SingleOrDefaultAsync();
                 
                 Assert.IsNotNull(group);
                 Assert.AreEqual(updatedName, group.Name);

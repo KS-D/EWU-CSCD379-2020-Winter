@@ -38,7 +38,7 @@ namespace SecretSanta.Data.Tests
 
             using (var applicationDbContext = new ApplicationDbContext(Options))
             {
-                var gift = await applicationDbContext.Gifts.Where(g => g.Id == giftId).SingleOrDefaultAsync();
+                Gift gift = await applicationDbContext.Gifts.Where(g => g.Id == giftId).SingleOrDefaultAsync();
                 
                 Assert.IsNotNull(gift);
                 Assert.AreEqual(_Gift.Title, gift.Title);
@@ -65,7 +65,7 @@ namespace SecretSanta.Data.Tests
             
             using (var applicationDbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
-                var gift = await applicationDbContext.Gifts.Where(g => g.Id == giftId).SingleOrDefaultAsync();
+                Gift gift = await applicationDbContext.Gifts.Where(g => g.Id == giftId).SingleOrDefaultAsync();
                 
                 Assert.IsNotNull(gift);
                 Assert.AreEqual(_UserName, gift.CreatedBy);
@@ -99,7 +99,7 @@ namespace SecretSanta.Data.Tests
             
             using (var applicationDbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
-                var gift = await applicationDbContext.Gifts.Where(a => a.Id == giftId).SingleOrDefaultAsync();
+                Gift gift = await applicationDbContext.Gifts.Where(a => a.Id == giftId).SingleOrDefaultAsync();
                 gift.Title = updatedTitle;
                 gift.Description = updatedDescription;
 
@@ -108,7 +108,7 @@ namespace SecretSanta.Data.Tests
             
             using (var applicationDbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
-                var gift = await applicationDbContext.Gifts.Where(g => g.Id == giftId).SingleOrDefaultAsync();
+                Gift gift = await applicationDbContext.Gifts.Where(g => g.Id == giftId).SingleOrDefaultAsync();
                 
                 Assert.IsNotNull(gift);
                 Assert.AreEqual(updatedTitle, gift.Title);

@@ -36,7 +36,7 @@ namespace SecretSanta.Data.Tests
 
             using (var applicationDbContext = new ApplicationDbContext(Options))
             {
-                var user = await applicationDbContext.Users.Where(u => u.Id == userId).SingleOrDefaultAsync();
+                User user = await applicationDbContext.Users.Where(u => u.Id == userId).SingleOrDefaultAsync();
                 
                 Assert.IsNotNull(user);
                 Assert.AreEqual("Kyle", user.FirstName);
@@ -61,7 +61,7 @@ namespace SecretSanta.Data.Tests
             
             using (var applicationDbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
-                var user = await applicationDbContext.Users.Where(u => u.Id == userId).SingleOrDefaultAsync();
+                User user = await applicationDbContext.Users.Where(u => u.Id == userId).SingleOrDefaultAsync();
                 
                 Assert.IsNotNull(user);
                 Assert.AreEqual("kyle", user.CreatedBy);
@@ -101,7 +101,7 @@ namespace SecretSanta.Data.Tests
             
             using (var applicationDbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
-                var user = await applicationDbContext.Users.Where(a => a.Id == userId).SingleOrDefaultAsync();
+                User user = await applicationDbContext.Users.Where(a => a.Id == userId).SingleOrDefaultAsync();
                 user.FirstName = updatedFirstName;
                 user.LastName = updatedLastName;
 
@@ -110,7 +110,7 @@ namespace SecretSanta.Data.Tests
             
             using (var applicationDbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
-                var user = await applicationDbContext.Users.Where(u => u.Id == userId).SingleOrDefaultAsync();
+                User user = await applicationDbContext.Users.Where(u => u.Id == userId).SingleOrDefaultAsync();
                 
                 Assert.IsNotNull(user);
                 Assert.AreEqual(updatedFirstName, user.FirstName);

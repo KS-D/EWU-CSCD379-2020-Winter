@@ -9,12 +9,13 @@ namespace SecretSanta.Data
 {
     public class ApplicationDbContext : DbContext
     {
-        #nullable disable
+
+#nullable disable //CS8616 Non-nullable property is uninitialized
         public DbSet<User> Users { get; set; }
         public DbSet<Gift> Gifts { get; set; }
         public DbSet<Group> Groups { get; set; }
         public IHttpContextAccessor HttpContextAccessor { get; set; }
-        #nullable enable
+#nullable enable 
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
@@ -29,13 +30,13 @@ namespace SecretSanta.Data
             modelBuilder?.Entity<GroupUser>().HasKey(gu => new {gu.GroupId, gu.UserId});
 
             modelBuilder?.Entity<GroupUser>()
-                .HasOne(u => u.User)
-                .WithMany(gu => gu.GroupUsers)
+                .HasOne(gu => gu.User)
+                .WithMany(u => u.GroupUsers)
                 .HasForeignKey(u => u.UserId);
 
             modelBuilder?.Entity<GroupUser>()
                 .HasOne(gu => gu.Group)
-                .WithMany(gu => gu.GroupUsers)
+                .WithMany(u => u.GroupUsers)
                 .HasForeignKey(g => g.GroupId);
         }
 
