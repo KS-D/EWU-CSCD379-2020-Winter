@@ -30,5 +30,13 @@ namespace SecretSanta.Data.Tests
         public const string Buttercup = "Buttercup";
 
         static public User CreateUserButtercup() => new User(Princess, Buttercup);
+
+        public const string ForestGroupTitle = "Enchanted Forest";
+
+        public static Group CreateEnchantedForestGroup() => new Group(ForestGroupTitle);
+
+        public const string CastleGroupTitle = "Its a castle!";
+        
+        public static Group CreateCastleGroup() => new Group(CastleGroupTitle);
     }
 }

@@ -1,6 +1,5 @@
-﻿using System.Threading.Tasks;
-using AutoMapper;
-using BlogEngine.Business;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SecretSanta.Data;
@@ -79,22 +78,34 @@ namespace SecretSanta.Business.Tests
         }
 
         [TestMethod]
-        public async Task Fetch_UserFromDatabase()
+        public async Task Fetch_AllUserFromDatabase_Success()
         {
             (User inigo, User princess) = await InsertUsersIntoDatabase();
+            using ApplicationDbContext dbContextFetch = new ApplicationDbContext(Options);
+            IUserService service = new UserService(dbContextFetch, Mapper);
 
-            using var dbContextFetch = new ApplicationDbContext(Options);
-            
-            User inigoFromDatabase = await dbContextFetch.Users.SingleAsync(item => item.Id == inigo.Id);
-            User princessFromDb = await dbContextFetch.Users.SingleAsync(item => item.Id == princess.Id);
+            List<User> UserList = await service.FetchAllAsync();
+
+            Assert.AreEqual(2, UserList.Count);
+            Assert.AreEqual(
+                (inigo.Id, SampleData.Inigo, SampleData.Montoya), (UserList[0].Id, UserList[0].FirstName, UserList[0].LastName));
 
             Assert.AreEqual(
-                (inigo.Id, SampleData.Inigo, SampleData.Montoya), (inigoFromDatabase.Id, inigoFromDatabase.FirstName, inigoFromDatabase.LastName));
+                (princess.Id, SampleData.Princess, SampleData.Buttercup), (UserList[1].Id, UserList[1].FirstName, UserList[1].LastName));
+        }
+
+        [TestMethod]
+        public async Task Fetch_OneUserFromDatabase_Success()
+        {
+            (User inigo, User _) = await InsertUsersIntoDatabase();
+            using ApplicationDbContext dbContextFetch = new ApplicationDbContext(Options);
+            IUserService service = new UserService(dbContextFetch, Mapper);
+
+            User inigoFromdb = await service.FetchByIdAsync(inigo.Id);
 
             Assert.AreEqual(
-                (princess.Id, SampleData.Princess, SampleData.Buttercup), (princessFromDb.Id, princessFromDb.FirstName, princessFromDb.LastName));
-
-
+                (inigo.Id, SampleData.Inigo, SampleData.Montoya),
+                (inigoFromdb.Id, inigoFromdb.FirstName, inigoFromdb.LastName));
         }
 
         private async Task<(User inigo, User princess)> InsertUsersIntoDatabase()
