@@ -17,16 +17,21 @@ namespace SecretSanta.Data
 #nullable enable
         public int UserId { get; set; }
 
-        public Gift(string title, string description, string url, User user) : this(title, description, url)
+        public Gift(string title, string description, string url, User user) : this(title, description, url,
+#pragma warning disable CA1062 // Cannot be null
+            user.Id)
+        #pragma warning restore CA1062
         {
             User = user;
         }
-
-        private Gift(string title, string description, string url)
+#nullable disable
+        private Gift(string title, string description, string url, int userId)
+    #nullable enable
         {
             Title = title;
             Description = description;
             Url = url;
+            UserId = userId;
         }
     }
 }
