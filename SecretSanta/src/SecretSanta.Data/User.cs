@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.VisualBasic.CompilerServices;
 
 namespace SecretSanta.Data
 {

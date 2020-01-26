@@ -18,9 +18,15 @@ namespace SecretSanta.Business
             ApplicationDbContext = applicationDbContext ?? throw new ArgumentNullException(nameof(applicationDbContext));
             Mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
-        public Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+
+            TEntity entity = await FetchByIdAsync(id);
+            var entityFromDb = ApplicationDbContext.Set<TEntity>().Remove(entity);
+            bool deleted = entityFromDb.State == EntityState.Deleted;
+
+            await ApplicationDbContext.SaveChangesAsync();
+            return deleted;
         }
 
         public async Task<List<TEntity>> FetchAllAsync() =>

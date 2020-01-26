@@ -30,18 +30,19 @@ namespace SecretSanta.Data.Tests
                 Assert.AreEqual("The doorbell that saw too much", gifts[0].Description);
             }
         }
+
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Gift_SetTitleToNull_ThrowsArgumentNullException()
         {
-            _ = new Gift(null!, SampleData.RingDescription, SampleData.RingUrl, SampleData.CreateInigo());
+            _ = new Gift(null!, SampleData.RingDescription, SampleData.RingUrl, SampleData.CreateUserInigo());
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Gift_SetDescriptionToNull_ThrowsArgumentNullException()
         { 
-            _ = new Gift(SampleData.RingTitle, null!, SampleData.RingUrl, SampleData.CreateInigo());
+            _ = new Gift(SampleData.RingTitle, null!, SampleData.RingUrl, SampleData.CreateUserInigo());
         }
 
         [TestMethod]
@@ -49,7 +50,7 @@ namespace SecretSanta.Data.Tests
         public void Gift_SetUrlToNull_ThrowsArgumentNullException()
         {
 
-            _ = new Gift(SampleData.RingTitle, SampleData.RingDescription, null!, SampleData.CreateInigo());
+            _ = new Gift(SampleData.RingTitle, SampleData.RingDescription, null!, SampleData.CreateUserInigo());
         }
     }
 }

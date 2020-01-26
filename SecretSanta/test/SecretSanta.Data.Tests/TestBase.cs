@@ -29,7 +29,7 @@ namespace SecretSanta.Data.Tests
         }
 
         [TestInitialize]
-        public void InitializeTests()
+        public virtual void InitializeTests()
         {
             SqliteConnection = new SqliteConnection("DataSource=:memory:");
             SqliteConnection.Open();
