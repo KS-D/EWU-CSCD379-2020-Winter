@@ -13,13 +13,30 @@ namespace SecretSanta.Data.Tests
     [TestClass]
     public class UserTests : TestBase
     {
+        //Todo move the data into a shared test data class
+        private const string _Inigo = "Inigo";
+        private const string _Montoya = "Montoya";
+
+        private const string _RingDoorBell = "ring doorbell";
+        private const string _RingUrl = "www.ring.com";
+        private const string _RingDiscription = "Just a cool little toy so I can keep my amazon packages";
+
+        private const string _ArduinoTitle = "Arduino";
+        private const string _ArduinoUrl = "www.arduino.com";
+        private const string _ArduinoDescription = "Every good geek needs an IOT device";
+
+        private static User CreateInigo() => new User(_Inigo, _Montoya);
+        private static Gift CreateGiftRing() => new Gift(_RingDoorBell, _RingDiscription, _RingUrl, CreateInigo());
+        private static Gift CreateGiftArduino() =>
+            new Gift(_ArduinoTitle, _ArduinoDescription, _ArduinoUrl, CreateInigo());
+
         [TestMethod]
         public async Task User_CanSaveToDatabase()
         {
             // Arrange
             using (var dbContext = new ApplicationDbContext(Options))
             {
-                dbContext.Users.Add(new User("Inigo", "Montoya"));
+                dbContext.Users.Add(CreateInigo());
                 await dbContext.SaveChangesAsync().ConfigureAwait(false);
             }
             // Act
@@ -132,9 +149,9 @@ namespace SecretSanta.Data.Tests
             // Arrange
             using (var dbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
-                var gift1 = new Gift { Title = "Ring Doorbell", Url = "www.ring.com", Description = "Just a cool little toy so I can keep my amazon packages" };
-                var gift2 = new Gift { Title = "Arduino", Url = "www.arduino.com", Description = "Every good geek needs an IOT device" };
-                var user = new User("Inigo", "Montoya");
+                Gift gift1 = CreateGiftRing();
+                Gift gift2 = CreateGiftArduino();
+                User user = CreateInigo();
                 user.Gifts.Add(gift1);
                 user.Gifts.Add(gift2);
                 dbContext.Users.Add(user);

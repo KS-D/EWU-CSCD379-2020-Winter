@@ -9,19 +9,18 @@ namespace SecretSanta.Data.Tests
     [TestClass]
     public class GiftTests : TestBase
     {
+        private const string _Title = "Ring Doorbell";
+        private const string _Url = "www.ring.com";
+        private const string _Description = "The doorbell that saw too much";
+        private readonly Gift _Gift = new Gift(_Title,_Description, _Url, CreateInigo());
+        static private User CreateInigo() => new User("Inigo", "Montoya");
         [TestMethod]
         public async Task Gift_CanBeSavedToDatabase()
         {
             // Arrange
             using (var dbContext = new ApplicationDbContext(Options))
             {
-                dbContext.Gifts.Add(new Gift
-                {
-                    Title = "Ring Doorbell",
-                    Url = "www.ring.com",
-                    Description = "The doorbell that saw too much",
-                    User = new User("Inigo", "Montoya")
-                }); ;
+                dbContext.Gifts.Add(_Gift);
                 await dbContext.SaveChangesAsync().ConfigureAwait(false);
             }
             // Act
@@ -40,30 +39,22 @@ namespace SecretSanta.Data.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Gift_SetTitleToNull_ThrowsArgumentNullException()
         {
-            _ = new Gift
-            {
-                Title = null!
-            };
+            _ = new Gift(null!, _Description, _Url, CreateInigo());
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Gift_SetDescriptionToNull_ThrowsArgumentNullException()
-        {
-            _ = new Gift
-            {
-                Description = null!
-            };
+        { 
+            _ = new Gift(_Title, null!, _Url, CreateInigo());
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Gift_SetUrlToNull_ThrowsArgumentNullException()
         {
-            _ = new Gift
-            {
-                Url = null!
-            };
+
+            _ = new Gift(_Title, _Description, null!, CreateInigo());
         }
     }
 }
