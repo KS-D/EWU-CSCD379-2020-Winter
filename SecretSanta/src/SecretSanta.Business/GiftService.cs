@@ -1,5 +1,7 @@
 ﻿
+using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using SecretSanta.Data;
 
 namespace SecretSanta.Business
@@ -10,5 +12,12 @@ namespace SecretSanta.Business
         public GiftService(ApplicationDbContext applicationDbContext, IMapper mapper) : base(applicationDbContext, mapper)
         {
         }
-    }
+
+        public override async Task<Gift> FetchByIdAsync(int id)
+        {
+            return await ApplicationDbContext.Gifts.Include(g => g.User)
+                .SingleOrDefaultAsync(item => item.Id == id);
+ 
+        }
+   }
 }

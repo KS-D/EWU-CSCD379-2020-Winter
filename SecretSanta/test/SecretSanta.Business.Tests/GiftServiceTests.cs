@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -28,7 +29,7 @@ namespace SecretSanta.Business.Tests
         }
 
         [TestMethod]
-        public async Task UpdateGroup_ShouldSaveIntoDatabase()
+        public async Task UpdateGift_ShouldSaveIntoDatabase()
         {
             (Gift ring, Gift arduino) = await InsertGroupIntoDatabase();
             
@@ -100,12 +101,10 @@ namespace SecretSanta.Business.Tests
             List<Gift> GiftList = await service.FetchAllAsync();
 
             Assert.AreEqual(2, GiftList.Count);
-            Assert.AreEqual(
-                (ring.Id, SampleData.RingTitle, SampleData.RingDescription, SampleData.RingUrl), (GiftList[0].Id, GiftList[0].Title, GiftList[0].Description, 
-                    GiftList[0].Url));
-            Assert.AreEqual(
-                (arduino.Id, SampleData.ArduinoTitle, SampleData.ArduinoDescription, SampleData.ArduinoUrl), (GiftList[1].Id, GiftList[1].Title, GiftList[1].Description, 
-                    GiftList[1].Url));
+            Assert.AreEqual((ring.Id, SampleData.RingTitle, SampleData.RingDescription, SampleData.RingUrl), 
+                (GiftList[0].Id, GiftList[0].Title, GiftList[0].Description, GiftList[0].Url));
+            Assert.AreEqual((arduino.Id, SampleData.ArduinoTitle, SampleData.ArduinoDescription, SampleData.ArduinoUrl),
+                (GiftList[1].Id, GiftList[1].Title, GiftList[1].Description, GiftList[1].Url));
         }
 
         [TestMethod]
@@ -116,12 +115,12 @@ namespace SecretSanta.Business.Tests
             IGiftService service = new GiftService(dbContext, Mapper);
 
             Gift ringFromdb =  await service.FetchByIdAsync(ring.Id);
-           
-            Assert.AreEqual(
-                (ring.Id, SampleData.RingTitle, SampleData.RingDescription, SampleData.RingUrl), 
-                (ringFromdb.Id, ringFromdb.Title, ringFromdb.Description, 
-                    ringFromdb.Url));
+            User inigoOnRing = ringFromdb.User;
             
+            Assert.AreEqual((ring.Id, SampleData.RingTitle, SampleData.RingDescription, SampleData.RingUrl), 
+                (ringFromdb.Id, ringFromdb.Title, ringFromdb.Description, ringFromdb.Url));
+            Assert.IsNotNull(inigoOnRing);
+            Assert.AreEqual((SampleData.Inigo, SampleData.Montoya), (inigoOnRing.FirstName, inigoOnRing.LastName));
         }
 
     }
