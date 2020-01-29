@@ -19,7 +19,7 @@ namespace SecretSanta.Data.Tests
         public const string ArduinoDescription = "Every good geek needs an IOT device";
 
         public static Gift CreateGiftArduino() =>
-            new Gift(ArduinoTitle, ArduinoDescription, ArduinoUrl, CreateUserInigo());
+            new Gift(ArduinoTitle, ArduinoDescription, ArduinoUrl, CreateUserButtercup());
 
         public const string Inigo = "Inigo";
         public const string Montoya = "Montoya";
