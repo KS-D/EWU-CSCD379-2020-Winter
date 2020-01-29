@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +18,11 @@ namespace SecretSanta.Business
         {
             return await ApplicationDbContext.Gifts.Include(g => g.User)
                 .SingleOrDefaultAsync(item => item.Id == id);
- 
         }
-   }
+
+        public override async Task<List<Gift>> FetchAllAsync()
+        {
+            return await ApplicationDbContext.Gifts.Include(gift => gift.User).ToListAsync();
+        }
+    }
 }

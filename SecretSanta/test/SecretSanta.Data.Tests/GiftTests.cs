@@ -51,7 +51,7 @@ namespace SecretSanta.Data.Tests
                 applicationDbContext.Gifts.Add(ringGift);
                 await applicationDbContext.SaveChangesAsync();
 
-                giftId = ringGift.Id;
+                giftId = ringGift.Id!.Value;
             }
             
             using (var applicationDbContext = new ApplicationDbContext(Options, httpContextAccessor))
@@ -82,7 +82,7 @@ namespace SecretSanta.Data.Tests
                 applicationDbContext.Gifts.Add(ringGift);
                 await applicationDbContext.SaveChangesAsync();
 
-                giftId = ringGift.Id;
+                giftId = ringGift.Id!.Value;
             }
             
             httpContextAccessor = Mock.Of<IHttpContextAccessor>(hta => 
@@ -114,7 +114,6 @@ namespace SecretSanta.Data.Tests
         [TestMethod]
         public async Task Gift_DeleteAGift_Success()
         {
-            var giftId = -1;
             Gift ringGift = SampleData.CreateRingGift();
             Gift arduino = SampleData.CreateGiftArduino();
 
@@ -126,7 +125,6 @@ namespace SecretSanta.Data.Tests
                 applicationDbContext.Gifts.Add(arduino);
                 await applicationDbContext.SaveChangesAsync();
 
-                giftId = ringGift.Id;
             }
            
             using (var applicationDbContext = new ApplicationDbContext(Options))

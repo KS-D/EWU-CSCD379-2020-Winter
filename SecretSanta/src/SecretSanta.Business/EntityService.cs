@@ -29,7 +29,7 @@ namespace SecretSanta.Business
             return deleted;
         }
 
-        public async Task<List<TEntity>> FetchAllAsync() =>
+        virtual public async Task<List<TEntity>> FetchAllAsync() =>
             await ApplicationDbContext.Set<TEntity>().ToListAsync();
 
         virtual public async Task<TEntity> FetchByIdAsync(int id) =>

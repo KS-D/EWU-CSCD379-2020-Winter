@@ -1,6 +1,7 @@
 ﻿
 using AutoMapper;
 using BlogEngine.Business;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace SecretSanta.Business.Tests

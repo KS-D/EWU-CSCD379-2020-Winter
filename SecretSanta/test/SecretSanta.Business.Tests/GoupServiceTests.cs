@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -42,8 +43,7 @@ namespace SecretSanta.Business.Tests
             const string updatedTitle = "Enchanted ongoing land development project";
             forestFromDb.Title = updatedTitle;
 
-            // Update Inigo Montoya using the princesses Id.
-            await service.UpdateAsync(castle.Id, forestFromDb);
+            await service.UpdateAsync(castle.Id!.Value, forestFromDb);
 
             // Assert
             using var dbContextAssert = new ApplicationDbContext(Options);
@@ -75,7 +75,7 @@ namespace SecretSanta.Business.Tests
             using var dbContext = new ApplicationDbContext(Options);
             IGroupService service = new GroupService(dbContext, Mapper);
 
-            bool deleted = await service.DeleteAsync(forest.Id);
+            bool deleted = await service.DeleteAsync(forest.Id!.Value!);
             
             using var dbContextFetch = new ApplicationDbContext(Options);
             Group castleFromDb = await dbContextFetch.Groups.SingleAsync(item => item.Id == castle.Id);
@@ -93,7 +93,7 @@ namespace SecretSanta.Business.Tests
             using var dbContext = new ApplicationDbContext(Options);
             IGroupService service = new GroupService(dbContext, Mapper);
 
-            Group forestFromdb = await service.FetchByIdAsync(forest.Id);
+            Group forestFromdb = await service.FetchByIdAsync(forest!.Id!.Value);
 
             Assert.AreEqual(forest.Title, forestFromdb.Title);
         }

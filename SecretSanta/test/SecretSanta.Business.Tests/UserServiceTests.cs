@@ -43,7 +43,7 @@ namespace SecretSanta.Business.Tests
             inigoFromDb.LastName = montoyaThe3rd;
 
             // Update Inigo Montoya using the princesses Id.
-            await service.UpdateAsync(princess.Id, inigoFromDb);
+            await service.UpdateAsync(princess.Id!.Value, inigoFromDb);
 
             // Assert
             using var dbContextAssert = new ApplicationDbContext(Options);
@@ -65,7 +65,7 @@ namespace SecretSanta.Business.Tests
             IUserService service = new UserService(dbContextInsert, Mapper);           
             
             //act 
-            bool deleted = await service.DeleteAsync(inigo.Id);
+            bool deleted = await service.DeleteAsync(inigo.Id!.Value);
             using var dbContextFetch = new ApplicationDbContext(Options);
             User princessFromDb = await dbContextFetch.Users.SingleAsync(item => item.Id == princess.Id);
             
@@ -87,11 +87,11 @@ namespace SecretSanta.Business.Tests
             List<User> UserList = await service.FetchAllAsync();
 
             Assert.AreEqual(2, UserList.Count);
-            Assert.AreEqual(
-                (inigo.Id, SampleData.Inigo, SampleData.Montoya), (UserList[0].Id, UserList[0].FirstName, UserList[0].LastName));
+            Assert.AreEqual((inigo.Id, SampleData.Inigo, SampleData.Montoya), 
+                (UserList[0].Id, UserList[0].FirstName, UserList[0].LastName));
 
-            Assert.AreEqual(
-                (princess.Id, SampleData.Princess, SampleData.Buttercup), (UserList[1].Id, UserList[1].FirstName, UserList[1].LastName));
+            Assert.AreEqual((princess.Id, SampleData.Princess, SampleData.Buttercup), 
+                (UserList[1].Id, UserList[1].FirstName, UserList[1].LastName));
         }
 
         [TestMethod]
@@ -101,7 +101,7 @@ namespace SecretSanta.Business.Tests
             using ApplicationDbContext dbContextFetch = new ApplicationDbContext(Options);
             IUserService service = new UserService(dbContextFetch, Mapper);
 
-            User inigoFromdb = await service.FetchByIdAsync(inigo.Id);
+            User inigoFromdb = await service.FetchByIdAsync(inigo.Id!.Value);
 
             Assert.AreEqual(
                 (inigo.Id, SampleData.Inigo, SampleData.Montoya),
