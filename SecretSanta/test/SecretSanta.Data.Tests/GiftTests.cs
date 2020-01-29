@@ -15,12 +15,13 @@ namespace SecretSanta.Data.Tests
     {
         private const string ClaimUser = "ksmith";
 
-       [TestMethod]
+        [TestMethod]
         public async Task Gift_CanBeSavedToDatabase()
         {
             // Arrange
             using (var dbContext = new ApplicationDbContext(Options))
             {
+
                 dbContext.Gifts.Add(SampleData.CreateRingGift());
                 await dbContext.SaveChangesAsync().ConfigureAwait(false);
             }
@@ -160,7 +161,6 @@ namespace SecretSanta.Data.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Gift_SetUrlToNull_ThrowsArgumentNullException()
         {
-
             _ = new Gift(SampleData.RingTitle, SampleData.RingDescription, null!, SampleData.CreateUserInigo());
         }
     }

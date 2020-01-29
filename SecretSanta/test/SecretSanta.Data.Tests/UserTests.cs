@@ -108,6 +108,7 @@ namespace SecretSanta.Data.Tests
             {
                 var group = new Group("Enchanted Forest");
                 var user = SampleData.CreateUserInigo();
+
                 user.UserGroups.Add(new UserGroup { User = user, Group = group });
                 dbContext.Users.Add(user);
                 await dbContext.SaveChangesAsync().ConfigureAwait(false);
@@ -136,6 +137,7 @@ namespace SecretSanta.Data.Tests
                 Gift gift1 = SampleData.CreateRingGift();
                 Gift gift2 = SampleData.CreateGiftArduino();
                 User user = SampleData.CreateUserInigo();
+                
                 user.Gifts.Add(gift1);
                 user.Gifts.Add(gift2);
                 dbContext.Users.Add(user);
