@@ -89,7 +89,7 @@ namespace SecretSanta.Business.Tests
         }
 
         [TestMethod]
-        public async Task FetchAll_RetrievesAllEntities_Success()
+        virtual public async Task FetchAll_RetrievesAllEntities_Success()
         {
             using var dbContext = new ApplicationDbContext(Options);
             EntityService<TEntity> service = GetService(dbContext);
@@ -122,7 +122,7 @@ namespace SecretSanta.Business.Tests
         }
 
         [TestMethod]
-        public async Task Fetch_RetrievesOneEntity_Success()
+        virtual public async Task Fetch_RetrievesOneEntity_Success()
         {
             using var dbContext = new ApplicationDbContext(Options);
             EntityService<TEntity> service = GetService(dbContext);
