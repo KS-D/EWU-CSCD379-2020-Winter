@@ -1,12 +1,15 @@
-﻿
+﻿using System;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using AutoMapper;
+using SecretSanta.Data;
 using BlogEngine.Business;
-using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SecretSanta.Data.Tests;
 
 namespace SecretSanta.Business.Tests
 {
-    public class TestBase : Data.Tests.TestBase
+    public class TestBase : SecretSanta.Data.Tests.TestBase
     {
 #nullable disable
         protected IMapper Mapper { get; private set; }
