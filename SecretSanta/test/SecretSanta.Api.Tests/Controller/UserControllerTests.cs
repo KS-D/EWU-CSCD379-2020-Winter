@@ -63,11 +63,5 @@ namespace SecretSanta.Api.Tests.Controller
             Assert.AreEqual((SampleData.Inigo, SampleData.Montoya), (inigo.FirstName, inigo.LastName));
             Assert.AreEqual((SampleData.Inigo, SampleData.Montoya), (inigo.FirstName, inigo.LastName));
         }
-
-        [TestMethod]
-        public void Post_UserController_Success()
-        {
-            var userController = new UserController(new Mock<IUserService>().Object);
-        }
     }
 }
