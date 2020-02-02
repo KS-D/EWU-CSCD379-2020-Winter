@@ -57,7 +57,7 @@ namespace SecretSanta.Api.Controllers
         {
             if (await UserService.UpdateAsync(id, value) is User user)
             {
-                return user;
+                return Ok(user);
             }
             return NotFound();
         }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SecretSanta.Business;
 using SecretSanta.Data;
@@ -15,7 +16,7 @@ namespace SecretSanta.Api.Controllers
 
         public GroupController(IGroupService groupService)
         {
-            GroupService = groupService;
+            GroupService = groupService ?? throw new ArgumentNullException(nameof(groupService));
         }
 
         // GET: api/Group
@@ -29,7 +30,7 @@ namespace SecretSanta.Api.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Gift>> Get(int id)
+        public async Task<ActionResult<Group>> Get(int id)
         {
             if (await GroupService.FetchByIdAsync(id) is Group group)
             {
@@ -49,7 +50,7 @@ namespace SecretSanta.Api.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Gift>> Put(int id, Group value)
+        public async Task<ActionResult<Group>> Put(int id, Group value)
         {
             if (await GroupService.UpdateAsync(id, value) is Group group)
             {

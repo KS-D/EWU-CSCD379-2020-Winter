@@ -56,7 +56,7 @@ namespace SecretSanta.Api.Controllers
         {
             if (await GiftService.UpdateAsync(id, value) is Gift gift)
             {
-                return gift;
+                return Ok(gift);
             }
             return NotFound();
         }
