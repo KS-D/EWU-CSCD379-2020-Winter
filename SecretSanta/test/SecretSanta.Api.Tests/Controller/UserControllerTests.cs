@@ -100,11 +100,11 @@ namespace SecretSanta.Api.Tests.Controller
         {
             var service = new Mock<IUserService>();
             User? user = (User?) SampleData.CreateUserInigo();
-            service.Setup(service => service.UpdateAsync(42, user))
+            service.Setup(service => service.UpdateAsync(42, user!))
                 .Returns(Task.FromResult(user));
             var userController = new UserController(service.Object);
 
-            ActionResult<User> actionResult = await userController.Put(42, user);
+            ActionResult<User> actionResult = await userController.Put(42, user!);
 
             Assert.IsNotNull(actionResult);
             Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult));

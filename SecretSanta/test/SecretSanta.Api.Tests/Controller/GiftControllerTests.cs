@@ -103,11 +103,11 @@ namespace SecretSanta.Api.Tests.Controller
         {
             var service = new Mock<IGiftService>();
             Gift? gift = (Gift?) SampleData.CreateRingGift();
-            service.Setup(service => service.UpdateAsync(42, gift))
+            service.Setup(service => service.UpdateAsync(42, gift!))
                 .Returns(Task.FromResult(gift));
             var giftController = new GiftController(service.Object);
 
-            ActionResult<Gift> actionResult = await giftController.Put(42, gift);
+            ActionResult<Gift> actionResult = await giftController.Put(42, gift!);
 
             Assert.IsNotNull(actionResult);
             Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult));
@@ -158,7 +158,7 @@ namespace SecretSanta.Api.Tests.Controller
             Assert.IsFalse(result);
         }
 
-        public class MockGift : Gift
+        private class MockGift : Gift
         {
             public MockGift(int id, Gift gift)
             {

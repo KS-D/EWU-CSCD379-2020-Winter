@@ -99,11 +99,11 @@ namespace SecretSanta.Api.Tests.Controller
         {
             var service = new Mock<IGroupService>();
             Group? group = (Group?)SampleData.CreateCastleGroup();
-            service.Setup(service => service.UpdateAsync(42, group))
+            service.Setup(service => service.UpdateAsync(42, group!))
                 .Returns(Task.FromResult(group));
             var groupController = new GroupController(service.Object);
 
-            ActionResult<Group> actionResult = await groupController.Put(42, group);
+            ActionResult<Group> actionResult = await groupController.Put(42, group!);
 
             Assert.IsNotNull(actionResult);
             Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult));
