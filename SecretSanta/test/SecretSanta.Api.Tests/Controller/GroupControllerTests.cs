@@ -27,7 +27,7 @@ namespace SecretSanta.Api.Tests.Controller
         [ExpectedException(typeof(ArgumentNullException))]
         public void Create_PassedNullService_ThrowsError()
         {
-            var groupController = new GroupController(null!);
+            _ = new GroupController(null!);
         }
 
         [TestMethod]
@@ -135,9 +135,9 @@ namespace SecretSanta.Api.Tests.Controller
                 .Returns(Task.FromResult(true));
             var groupController = new GroupController(service.Object);
 
-            bool result = await groupController.Delete(42);
+            IActionResult actionResult = await groupController.Delete(42);
 
-            Assert.IsTrue(result);
+            Assert.IsInstanceOfType(actionResult, typeof(OkResult));
         }
 
         [TestMethod]
@@ -148,9 +148,9 @@ namespace SecretSanta.Api.Tests.Controller
                 .Returns(Task.FromResult(false));
             var groupController = new GroupController(service.Object);
 
-            bool result = await groupController.Delete(42);
+            IActionResult actionResult = await groupController.Delete(42);
 
-            Assert.IsFalse(result);
+            Assert.IsInstanceOfType(actionResult, typeof(NotFoundResult));
         }
 
 

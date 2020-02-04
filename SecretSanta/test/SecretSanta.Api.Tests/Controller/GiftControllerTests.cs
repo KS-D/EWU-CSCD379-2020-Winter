@@ -27,7 +27,7 @@ namespace SecretSanta.Api.Tests.Controller
         [ExpectedException(typeof(ArgumentNullException))]
         public void Create_PassedNullService_ThrowsError()
         {
-            var giftController = new GiftController(null!);
+            _ = new GiftController(null!);
         }
 
         [TestMethod]
@@ -140,9 +140,9 @@ namespace SecretSanta.Api.Tests.Controller
                 .Returns(Task.FromResult(true));
             var giftController = new GiftController(service.Object);
 
-            bool result = await giftController.Delete(42);
-
-            Assert.IsTrue(result);
+            IActionResult actionResult = await giftController.Delete(42);
+            
+            Assert.IsInstanceOfType(actionResult, typeof(OkResult));
         }
 
         [TestMethod]
@@ -153,9 +153,9 @@ namespace SecretSanta.Api.Tests.Controller
                 .Returns(Task.FromResult(false));
             var giftController = new GiftController(service.Object);
 
-            bool result = await giftController.Delete(42);
+            IActionResult actionResult = await giftController.Delete(42);
 
-            Assert.IsFalse(result);
+            Assert.IsInstanceOfType(actionResult, typeof(NotFoundResult));
         }
 
         private class MockGift : Gift

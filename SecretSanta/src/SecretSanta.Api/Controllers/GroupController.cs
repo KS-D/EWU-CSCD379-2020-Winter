@@ -61,9 +61,16 @@ namespace SecretSanta.Api.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public async Task<bool> Delete(int id)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Delete(int id)
         {
-            return await GroupService.DeleteAsync(id);
+            if (await GroupService.DeleteAsync(id))
+            {
+                return Ok();
+            }
+
+            return NotFound();
         }
     }
 }

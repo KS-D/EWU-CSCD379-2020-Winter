@@ -27,7 +27,7 @@ namespace SecretSanta.Api.Tests.Controller
         [ExpectedException(typeof(ArgumentNullException))]
         public void Create_PassedNullService_ThrowsError()
         {
-            var userController = new UserController(null!);
+            _ = new UserController(null!);
         }
 
         [TestMethod]
@@ -109,7 +109,7 @@ namespace SecretSanta.Api.Tests.Controller
             Assert.IsNotNull(actionResult);
             Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult));
             OkObjectResult ok = (OkObjectResult)actionResult.Result;
-           // IHttpActionResult actionResult = controller.Delete(10);
+            
             User returnedUser = (User)ok.Value;
             Assert.IsNotNull(returnedUser);
             Assert.AreEqual((SampleData.Inigo, SampleData.Montoya),
@@ -137,10 +137,10 @@ namespace SecretSanta.Api.Tests.Controller
             service.Setup(service => service.DeleteAsync(42))
                 .Returns(Task.FromResult(true));
             var userController = new UserController(service.Object);
+            
+            IActionResult actionResult = await userController.Delete(42);
 
-            bool result = await userController.Delete(42);
-
-            Assert.IsTrue(result);
+            Assert.IsInstanceOfType(actionResult, typeof(OkResult));
         }
 
         [TestMethod]
@@ -151,9 +151,9 @@ namespace SecretSanta.Api.Tests.Controller
                 .Returns(Task.FromResult(false));
             var userController = new UserController(service.Object);
 
-            bool result = await userController.Delete(42);
+            IActionResult actionResult = await userController.Delete(42);
 
-            Assert.IsFalse(result);
+            Assert.IsInstanceOfType(actionResult, typeof(NotFoundResult));
         }
 
 
