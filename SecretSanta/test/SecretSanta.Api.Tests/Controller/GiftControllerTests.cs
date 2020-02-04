@@ -133,7 +133,7 @@ namespace SecretSanta.Api.Tests.Controller
         }
 
         [TestMethod]
-        public async Task Delete_ItemRemoved_ReturnsTrue()
+        public async Task Delete_ItemRemoved_ReturnsOk()
         {
             var service = new Mock<IGiftService>();
             service.Setup(service => service.DeleteAsync(42))
@@ -146,7 +146,7 @@ namespace SecretSanta.Api.Tests.Controller
         }
 
         [TestMethod]
-        public async Task Delete_ItemNotRemoved_ReturnsFalse()
+        public async Task Delete_ItemNotRemoved_ReturnsNotFound()
         {
             var service = new Mock<IGiftService>();
             service.Setup(service => service.DeleteAsync(42))
