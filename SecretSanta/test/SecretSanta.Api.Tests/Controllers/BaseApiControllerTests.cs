@@ -1,23 +1,30 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SecretSanta.Api.Controllers;
-using SecretSanta.Business;
+using SecretSanta.Business.Services;
+using SecretSanta.Business.Dto;
 using SecretSanta.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using SecretSanta.Business;
 
 namespace SecretSanta.Api.Tests.Controllers
 {
     [TestClass]
-    public abstract class BaseApiControllerTests<TEntity, TService> 
+    public abstract class BaseApiControllerTests<TEntity, TService, TDto, TInputDto> 
         where TEntity : EntityBase
-        where TService : InMemoryEntityService<TEntity>, new()
+        where TService : InMemoryEntityService<TEntity, TDto,TInputDto>, new()
+        where TDto : class, TInputDto 
+        where TInputDto : class
+
     {
-        protected abstract BaseApiController<TEntity> CreateController(TService service);
+        protected abstract BaseApiController<TEntity, TDto, TInputDto> CreateController(TService service);
 
         protected abstract TEntity CreateEntity();
+        private IMapper Mapper { get; } = AutomapperConfigurationProfile.CreateMapper();
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -29,14 +36,14 @@ namespace SecretSanta.Api.Tests.Controllers
         [TestMethod]
         public async Task Get_FetchesAllItems()
         {
-            TService service = new TService();
+            var service = new TService();
             service.Items.Add(CreateEntity());
             service.Items.Add(CreateEntity());
             service.Items.Add(CreateEntity());
 
-            BaseApiController<TEntity> controller = CreateController(service);
+            var controller = CreateController(service);
 
-            IEnumerable<TEntity> items = await controller.Get();
+            var items = await controller.Get();
 
             CollectionAssert.AreEqual(service.Items.ToList(), items.ToList());
         }
@@ -44,10 +51,10 @@ namespace SecretSanta.Api.Tests.Controllers
         [TestMethod]
         public async Task Get_WhenEntityDoesNotExist_ReturnsNotFound()
         {
-            TService service = new TService();
-            BaseApiController<TEntity> controller = CreateController(service);
+            var service = new TService();
+            var controller = CreateController(service);
 
-            IActionResult result = await controller.Get(1);
+            var result = await controller.Get(1);
 
             Assert.IsTrue(result is NotFoundResult);
         }
@@ -56,12 +63,12 @@ namespace SecretSanta.Api.Tests.Controllers
         [TestMethod]
         public async Task Get_WhenEntityExists_ReturnsItem()
         {
-            TService service = new TService();
-            TEntity entity = CreateEntity();
+            var service = new TService();
+            var entity = CreateEntity();
             service.Items.Add(entity);
-            BaseApiController<TEntity> controller = CreateController(service);
+            var controller = CreateController(service);
 
-            IActionResult result = await controller.Get(entity.Id);
+            var result = await controller.Get(entity.Id);
 
             var okResult = result as OkObjectResult;
             
@@ -71,13 +78,14 @@ namespace SecretSanta.Api.Tests.Controllers
         [TestMethod]
         public async Task Put_UpdatesItem()
         {
-            TService service = new TService();
-            TEntity entity1 = CreateEntity();
+            var service = new TService();
+            var entity1 = CreateEntity();
             service.Items.Add(entity1);
-            TEntity entity2 = CreateEntity();
-            BaseApiController<TEntity> controller = CreateController(service);
+            var entity2 = CreateEntity();
+            var controller = CreateController(service);
+            var entityInput = Mapper.Map<TEntity, TInputDto>(entity2);
 
-            TEntity? result = await controller.Put(entity1.Id, entity2);
+            var result = await controller.Put(entity1.Id, entityInput);
 
             Assert.AreEqual(entity2, result);
             Assert.AreEqual(entity2, service.Items.Single());
@@ -86,11 +94,12 @@ namespace SecretSanta.Api.Tests.Controllers
         [TestMethod]
         public async Task Post_InsertsItem()
         {
-            TService service = new TService();
-            TEntity entity = CreateEntity();
-            BaseApiController<TEntity> controller = CreateController(service);
-
-            TEntity? result = await controller.Post(entity);
+            var service = new TService();
+            var entity = CreateEntity();
+            BaseApiController<TEntity, TDto, TInputDto> controller = CreateController(service);
+            var entityInput = Mapper.Map<TEntity, TInputDto>(entity);
+            
+            var result = await controller.Post(entityInput);
 
             Assert.AreEqual(entity, result);
             Assert.AreEqual(entity, service.Items.Single());
@@ -99,10 +108,10 @@ namespace SecretSanta.Api.Tests.Controllers
         [TestMethod]
         public async Task Delete_WhenItemDoesNotExist_ReturnsNotFound()
         {
-            TService service = new TService();
-            BaseApiController<TEntity> controller = CreateController(service);
+            var service = new TService();
+            BaseApiController<TEntity, TDto, TInputDto> controller = CreateController(service);
 
-            IActionResult result = await controller.Delete(1);
+            var result = await controller.Delete(1);
 
             Assert.IsTrue(result is NotFoundResult);
         }
@@ -110,26 +119,36 @@ namespace SecretSanta.Api.Tests.Controllers
         [TestMethod]
         public async Task Delete_WhenItemExists_ReturnsOk()
         {
-            TService service = new TService();
-            TEntity entity = CreateEntity();
+            var service = new TService();
+            var entity = CreateEntity();
             service.Items.Add(entity);
-            BaseApiController<TEntity> controller = CreateController(service);
+            BaseApiController<TEntity, TDto, TInputDto> controller = CreateController(service);
 
-            IActionResult result = await controller.Delete(entity.Id);
+            var result = await controller.Delete(entity.Id);
 
             Assert.IsTrue(result is OkResult);
         }
 
-        private class ThrowingController : BaseApiController<TEntity>
+        private class ThrowingController : BaseApiController<TEntity, TDto, TInputDto>
         {
             public ThrowingController() : base(null!)
             { }
         }
     }
 
-    public class InMemoryEntityService<TEntity> : IEntityService<TEntity> where TEntity : EntityBase
+    public class InMemoryEntityService<TEntity, TDto, TInputDto> : IEntityService<TDto, TInputDto>  
+        where TEntity : EntityBase
+        where TInputDto : class
+        where TDto : class, TInputDto
+
     {
+        private IEntityService<TDto, TInputDto> _entityServiceImplementation;
         public IList<TEntity> Items { get; } = new List<TEntity>();
+
+        public Task<TDto?> UpdateAsync(int id, TInputDto entity)
+        {
+            return _entityServiceImplementation.UpdateAsync(id, entity);
+        }
 
         public Task<bool> DeleteAsync(int id)
         {
@@ -143,6 +162,21 @@ namespace SecretSanta.Api.Tests.Controllers
         public Task<List<TEntity>> FetchAllAsync()
         {
             return Task.FromResult(Items.ToList());
+        }
+
+        Task<TDto> IEntityService<TDto, TInputDto>.FetchByIdAsync(int id)
+        {
+            return _entityServiceImplementation.FetchByIdAsync(id);
+        }
+
+        public Task<TDto> InsertAsync(TInputDto entity)
+        {
+            return _entityServiceImplementation.InsertAsync(entity);
+        }
+
+        Task<List<TDto>> IEntityService<TDto, TInputDto>.FetchAllAsync()
+        {
+            return _entityServiceImplementation.FetchAllAsync();
         }
 
         public Task<TEntity> FetchByIdAsync(int id)
@@ -161,7 +195,7 @@ namespace SecretSanta.Api.Tests.Controllers
             if (Items.FirstOrDefault(x => x.Id == id) is { } found)
             {
                 Items[Items.IndexOf(found)] = entity;
-                return Task.FromResult<TEntity?>(entity);
+                return Task.FromResult<TEntity>(entity);
             }
             return Task.FromResult(default(TEntity));
         }

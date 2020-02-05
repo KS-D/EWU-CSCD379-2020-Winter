@@ -5,6 +5,7 @@ using SecretSanta.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SecretSanta.Business.Dto;
 
 namespace SecretSanta.Business.Tests
 {
@@ -12,7 +13,7 @@ namespace SecretSanta.Business.Tests
     [TestClass]
     public abstract class EntityServiceTests<TDto, TInputDto, TEntity> : TestBase
         where TEntity : EntityBase
-        where TDto : class, TInputDto, Dto.IEntity
+        where TDto : class, IEntityBase, TInputDto
         where TInputDto : class
     {
         protected abstract IEntityService<TDto, TInputDto> GetService(ApplicationDbContext dbContext, IMapper mapper);

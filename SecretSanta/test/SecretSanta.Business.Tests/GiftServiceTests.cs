@@ -8,7 +8,7 @@ using System;
 namespace SecretSanta.Business.Tests
 {
     [TestClass]
-    public class GiftServiceTests : EntityServiceTests<Dto.Gift, Dto.GiftInput, Data.Gift>
+    public class GiftServiceTests : EntityServiceTests<Dto.Gift, GiftInput, Data.Gift>
     {
         [TestInitialize]
         public void TestSetup()
