@@ -2,7 +2,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SecretSanta.Api.Controllers;
 using SecretSanta.Business.Services;
-using SecretSanta.Business.Dto;
 using SecretSanta.Data;
 using System;
 using System.Collections.Generic;
