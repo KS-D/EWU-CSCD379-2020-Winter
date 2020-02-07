@@ -1,6 +1,6 @@
 ﻿namespace SecretSanta.Business.Dto
 {
-    public class User : UserInput, IEntityBase
+    public class User : UserInput, IEntity
     {
         public int Id { get; set; }
     }

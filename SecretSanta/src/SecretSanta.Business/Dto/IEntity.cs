@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SecretSanta.Business.Dto
 {
-    public interface IEntityBase
+    public interface IEntity
     {
         public int Id { get; set; }
     }

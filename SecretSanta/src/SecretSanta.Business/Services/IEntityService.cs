@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using SecretSanta.Business.Dto;
 
 namespace SecretSanta.Business.Services
 {
     public interface IEntityService<TDto, TInputDto>
         where TInputDto : class
-        where TDto : class, TInputDto
+        where TDto : class, TInputDto, IEntity
     {
         Task<List<TDto>> FetchAllAsync();
         Task<TDto> FetchByIdAsync(int id);

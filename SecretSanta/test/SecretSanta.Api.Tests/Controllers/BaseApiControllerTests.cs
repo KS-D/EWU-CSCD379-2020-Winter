@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using SecretSanta.Business;
+using SecretSanta.Business.Dto;
 
 namespace SecretSanta.Api.Tests.Controllers
 {
@@ -16,11 +17,11 @@ namespace SecretSanta.Api.Tests.Controllers
     public abstract class BaseApiControllerTests<TEntity, TService, TDto, TInputDto> 
         where TEntity : EntityBase
         where TService : InMemoryEntityService<TEntity, TDto,TInputDto>, new()
-        where TDto : class, TInputDto 
         where TInputDto : class
+        where TDto : class, TInputDto, IEntity 
 
     {
-        protected abstract BaseApiController<TEntity, TDto, TInputDto> CreateController(TService service);
+        protected abstract BaseApiController<TDto, TInputDto> CreateController(TService service);
 
         protected abstract TEntity CreateEntity();
         private IMapper Mapper { get; } = AutomapperConfigurationProfile.CreateMapper();
@@ -95,7 +96,7 @@ namespace SecretSanta.Api.Tests.Controllers
         {
             var service = new TService();
             var entity = CreateEntity();
-            BaseApiController<TEntity, TDto, TInputDto> controller = CreateController(service);
+            BaseApiController<TDto, TInputDto> controller = CreateController(service);
             var entityInput = Mapper.Map<TEntity, TInputDto>(entity);
             
             var result = await controller.Post(entityInput);
@@ -108,7 +109,7 @@ namespace SecretSanta.Api.Tests.Controllers
         public async Task Delete_WhenItemDoesNotExist_ReturnsNotFound()
         {
             var service = new TService();
-            BaseApiController<TEntity, TDto, TInputDto> controller = CreateController(service);
+            BaseApiController<TDto, TInputDto> controller = CreateController(service);
 
             var result = await controller.Delete(1);
 
@@ -121,14 +122,14 @@ namespace SecretSanta.Api.Tests.Controllers
             var service = new TService();
             var entity = CreateEntity();
             service.Items.Add(entity);
-            BaseApiController<TEntity, TDto, TInputDto> controller = CreateController(service);
+            BaseApiController<TDto, TInputDto> controller = CreateController(service);
 
             var result = await controller.Delete(entity.Id);
 
             Assert.IsTrue(result is OkResult);
         }
 
-        private class ThrowingController : BaseApiController<TEntity, TDto, TInputDto>
+        private class ThrowingController : BaseApiController<TDto, TInputDto>
         {
             public ThrowingController() : base(null!)
             { }
@@ -138,7 +139,7 @@ namespace SecretSanta.Api.Tests.Controllers
     public class InMemoryEntityService<TEntity, TDto, TInputDto> : IEntityService<TDto, TInputDto>  
         where TEntity : EntityBase
         where TInputDto : class
-        where TDto : class, TInputDto
+        where TDto : class, TInputDto, IEntity
 
     {
         private IEntityService<TDto, TInputDto> _entityServiceImplementation;

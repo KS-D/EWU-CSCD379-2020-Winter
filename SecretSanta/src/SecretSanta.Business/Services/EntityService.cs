@@ -5,12 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SecretSanta.Business.Dto;
 
 namespace SecretSanta.Business.Services
 {
     public abstract class EntityService<TDto, TInputDto, TEntity> : IEntityService<TDto, TInputDto> 
         where TEntity : EntityBase 
-        where TDto : class, TInputDto 
+        where TDto : class, TInputDto, IEntity
         where TInputDto : class
     {
         protected ApplicationDbContext DbContext { get; }

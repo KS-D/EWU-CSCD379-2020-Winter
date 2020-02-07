@@ -9,16 +9,13 @@ namespace SecretSanta.Business
         public AutomapperConfigurationProfile()
         {
             CreateMap<Gift, Dto.Gift>();
-            CreateMap<Dto.GiftInput,Dto.Gift>();
             CreateMap<Dto.GiftInput, Gift>();
 
             CreateMap<User, Dto.User>();
-            CreateMap<Dto.User, Dto.UserInput>();
             CreateMap<Dto.UserInput, User>();
             
             CreateMap<Group, Dto.Group>();
-            CreateMap<Dto.GiftInput,Dto.Group>();
-            CreateMap<Dto.Group, Dto.GroupInput>();
+            CreateMap<Dto.GroupInput, Group>();
 
 
             

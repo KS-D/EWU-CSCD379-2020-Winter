@@ -5,13 +5,13 @@ using SecretSanta.Data;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SecretSanta.Business.Dto;
 
 namespace SecretSanta.Api.Controllers
 {
-    public abstract class BaseApiController<TEntity, TDto, TInputDto> : ControllerBase  
-        where TEntity : EntityBase
+    public abstract class BaseApiController<TDto, TInputDto> : ControllerBase  
         where TInputDto : class
-        where TDto : class, TInputDto
+        where TDto : class, TInputDto, IEntity
 
     {
         protected IEntityService<TDto, TInputDto> Service { get; }
