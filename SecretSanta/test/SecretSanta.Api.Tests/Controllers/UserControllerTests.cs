@@ -7,17 +7,20 @@ using SecretSanta.Business.Services;
 namespace SecretSanta.Api.Tests.Controllers
 {
     [TestClass]
-    public class UserControllerTests : BaseApiControllerTests<Data.User, UserInMemoryService, Business.Dto.User, UserInput>
+    public class UserControllerTests : BaseApiControllerTests<Data.User, IUserService, Business.Dto.User, UserInput>
     {
-        protected override BaseApiController<User, UserInput> CreateController(UserInMemoryService service)
+        protected override BaseApiController<User, UserInput> CreateController(IUserService service)
             => new UserController(service);
 
-        protected override Data.User CreateEntity()
-            => new Data.User(Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
+        protected override User CreateEntity()
+            => new User
+            {
+                FirstName = Guid.NewGuid().ToString(),
+                LastName = Guid.NewGuid().ToString(),
+                Id = new Random().Next(),
+                SantaId = new Random().Next()
+            };
+
     }
 
-    public class UserInMemoryService : InMemoryEntityService<Data.User, Business.Dto.User, UserInput>, IUserService
-    {
-
-    }
 }

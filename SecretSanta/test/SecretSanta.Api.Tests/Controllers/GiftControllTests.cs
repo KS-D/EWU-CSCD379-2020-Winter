@@ -3,26 +3,23 @@ using SecretSanta.Api.Controllers;
 using System;
 using SecretSanta.Business.Dto;
 using SecretSanta.Business.Services;
-using Gift = SecretSanta.Data.Gift;
-using User = SecretSanta.Data.User;
 
 namespace SecretSanta.Api.Tests.Controllers
 {
     [TestClass]
-    public class GiftControllTests : BaseApiControllerTests<Gift, GiftInMemoryService, Business.Dto.Gift, GiftInput>
+    public class GiftControllTests : BaseApiControllerTests<Data.Gift, IGiftService, Business.Dto.Gift, GiftInput>
     {
-        protected override BaseApiController<Business.Dto.Gift, GiftInput> CreateController(GiftInMemoryService service)
+        protected override BaseApiController<Business.Dto.Gift, GiftInput> CreateController(IGiftService service)
             => new GiftController(service);
 
-        protected override Gift CreateEntity()
-            => new Gift(Guid.NewGuid().ToString(),
-                Guid.NewGuid().ToString(),
-                Guid.NewGuid().ToString(),
-                new User(Guid.NewGuid().ToString(), Guid.NewGuid().ToString()));
-    }
-
-    public class GiftInMemoryService : InMemoryEntityService<Gift, Business.Dto.Gift, GiftInput>, IGiftService
-    {
-
+        protected override Business.Dto.Gift CreateEntity()
+            => new Business.Dto.Gift
+            {
+                Title = Guid.NewGuid().ToString(),
+                Description = Guid.NewGuid().ToString(),
+                Id = new Random().Next(),
+                Url = Guid.NewGuid().ToString(),
+                UserId = new Random().Next()
+            };
     }
 }
