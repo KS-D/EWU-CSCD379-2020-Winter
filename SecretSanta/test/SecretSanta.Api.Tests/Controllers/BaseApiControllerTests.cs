@@ -9,6 +9,7 @@ using SecretSanta.Business.Services;
 using SecretSanta.Data;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -95,9 +96,11 @@ namespace SecretSanta.Api.Tests.Controllers
                 .Returns(Task.FromResult<TDto?>(entity2));
             BaseApiController<TDto, TInputDto> controller = CreateController(service.Object);
 
-            TDto? result = await controller.Put(entity1.Id, entityInput);
+            ActionResult<TDto?> result = await controller.Put(entity1.Id, entityInput);
 
-            Assert.AreEqual(entity2, result);
+            Assert.IsTrue(result.Result is OkObjectResult);
+            OkObjectResult ok = (OkObjectResult) result.Result;
+            Assert.AreEqual(entity2, ok.Value);
         }
 
         [TestMethod]
