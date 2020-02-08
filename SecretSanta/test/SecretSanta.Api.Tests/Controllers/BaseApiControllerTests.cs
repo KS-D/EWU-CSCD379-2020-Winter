@@ -9,6 +9,7 @@ using SecretSanta.Business.Services;
 using SecretSanta.Data;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SecretSanta.Api.Tests.Controllers
@@ -35,25 +36,33 @@ namespace SecretSanta.Api.Tests.Controllers
         [TestMethod]
         public async Task Get_FetchesAllItems()
         {
-            var service = new Mock<TService>();
+            Mock<TService> service = new Mock<TService>();
             List<TDto> getValues = new List<TDto>
             {
-
+                CreateEntity(),
+                CreateEntity(),
+                CreateEntity()
             };
+            service.Setup(service => service.FetchAllAsync())
+                .Returns(Task.FromResult(getValues));
            
-            var controller = CreateController(service.Object);
+            BaseApiController<TDto, TInputDto> controller = CreateController(service.Object);
 
-            var items = await controller.Get();
+            IEnumerable<TDto> items = await controller.Get();
 
+            Assert.IsNotNull(items);
+            CollectionAssert.AreEqual(getValues.ToList(), items.ToList());
         }
 
         [TestMethod]
         public async Task Get_WhenEntityDoesNotExist_ReturnsNotFound()
         {
-            var service = new Mock<TService>();
-            var controller = CreateController(service.Object);
+            Mock<TService> service = new Mock<TService>();
+            service.Setup(service => service.FetchByIdAsync(42))
+                .Returns(Task.FromResult<TDto>(null!));
+            BaseApiController<TDto, TInputDto> controller = CreateController(service.Object);
 
-            var result = await controller.Get(1);
+            IActionResult result = await controller.Get(42);
 
             Assert.IsTrue(result is NotFoundResult);
         }
@@ -62,14 +71,15 @@ namespace SecretSanta.Api.Tests.Controllers
         [TestMethod]
         public async Task Get_WhenEntityExists_ReturnsItem()
         {
-            var service = new Mock<TService>();
-            var entity = CreateEntity();
-            
-            var controller = CreateController(service.Object);
+            Mock<TService> service = new Mock<TService>();
+            TDto entity = CreateEntity();
+            service.Setup(service => service.FetchByIdAsync(42))
+                .Returns(Task.FromResult(entity));
+            BaseApiController<TDto, TInputDto> controller = CreateController(service.Object);
 
-            var result = await controller.Get(entity.Id);
+            IActionResult result = await controller.Get(42);
 
-            var okResult = result as OkObjectResult;
+            OkObjectResult okResult = result as OkObjectResult;
             
             Assert.AreEqual(entity, okResult?.Value);
         }
@@ -77,13 +87,15 @@ namespace SecretSanta.Api.Tests.Controllers
         [TestMethod]
         public async Task Put_UpdatesItem()
         {
-            var service = new Mock<TService>();
-            var entity1 = CreateEntity();
-            var entity2 = CreateEntity();
-            var controller = CreateController(service.Object);
-            var entityInput = Mapper.Map<TDto, TInputDto>(entity2);
+            TDto entity1 = CreateEntity();
+            TDto entity2 = CreateEntity();
+            TInputDto entityInput = Mapper.Map<TDto, TInputDto>(entity2);
+            Mock<TService> service = new Mock<TService>();
+            service.Setup(service => service.UpdateAsync(entity1.Id, entityInput))
+                .Returns(Task.FromResult<TDto?>(entity2));
+            BaseApiController<TDto, TInputDto> controller = CreateController(service.Object);
 
-            var result = await controller.Put(entity1.Id, entityInput);
+            TDto? result = await controller.Put(entity1.Id, entityInput);
 
             Assert.AreEqual(entity2, result);
         }
@@ -91,12 +103,14 @@ namespace SecretSanta.Api.Tests.Controllers
         [TestMethod]
         public async Task Post_InsertsItem()
         {
-            var service = new Mock<TService>();
-            var entity = CreateEntity();
+            TDto entity = CreateEntity();
+            TInputDto entityInput = Mapper.Map<TDto, TInputDto>(entity);
+            Mock<TService> service = new Mock<TService>();
+            service.Setup(service => service.InsertAsync(entityInput))
+                .Returns(Task.FromResult(entity));
             BaseApiController<TDto, TInputDto> controller = CreateController(service.Object);
-            var entityInput = Mapper.Map<TDto, TInputDto>(entity);
             
-            var result = await controller.Post(entityInput);
+            TDto result = await controller.Post(entityInput);
 
             Assert.AreEqual(entity, result);
         }
@@ -104,10 +118,10 @@ namespace SecretSanta.Api.Tests.Controllers
         [TestMethod]
         public async Task Delete_WhenItemDoesNotExist_ReturnsNotFound()
         {
-            var service = new Mock<TService>();
+            Mock<TService> service = new Mock<TService>();
             BaseApiController<TDto, TInputDto> controller = CreateController(service.Object);
 
-            var result = await controller.Delete(1);
+            IActionResult result = await controller.Delete(1);
 
             Assert.IsTrue(result is NotFoundResult);
         }
@@ -115,11 +129,13 @@ namespace SecretSanta.Api.Tests.Controllers
         [TestMethod]
         public async Task Delete_WhenItemExists_ReturnsOk()
         {
-            var service = new Mock<TService>();
-            var entity = CreateEntity();
+            TDto entity = CreateEntity();
+            Mock<TService> service = new Mock<TService>();
+            service.Setup(service => service.DeleteAsync(entity.Id))
+                .Returns(Task.FromResult(true));
             BaseApiController<TDto, TInputDto> controller = CreateController(service.Object);
 
-            var result = await controller.Delete(entity.Id);
+            IActionResult result = await controller.Delete(entity.Id);
 
             Assert.IsTrue(result is OkResult);
         }
