@@ -14,8 +14,7 @@ using System.Threading.Tasks;
 namespace SecretSanta.Api.Tests.Controllers
 {
     [TestClass]
-    public abstract class BaseApiControllerTests<TEntity, TService, TDto, TInputDto> 
-        where TEntity : EntityBase
+    public abstract class BaseApiControllerTests<TService, TDto, TInputDto> 
         where TService : class, IEntityService<TDto, TInputDto>
         where TInputDto : class
         where TDto : class, TInputDto, IEntity 

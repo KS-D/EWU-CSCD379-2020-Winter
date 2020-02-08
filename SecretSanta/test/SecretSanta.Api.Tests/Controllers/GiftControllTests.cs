@@ -7,13 +7,13 @@ using SecretSanta.Business.Services;
 namespace SecretSanta.Api.Tests.Controllers
 {
     [TestClass]
-    public class GiftControllTests : BaseApiControllerTests<Data.Gift, IGiftService, Business.Dto.Gift, GiftInput>
+    public class GiftControllTests : BaseApiControllerTests< IGiftService, Business.Dto.Gift, GiftInput>
     {
-        protected override BaseApiController<Business.Dto.Gift, GiftInput> CreateController(IGiftService service)
+        protected override BaseApiController<Gift, GiftInput> CreateController(IGiftService service)
             => new GiftController(service);
 
-        protected override Business.Dto.Gift CreateEntity()
-            => new Business.Dto.Gift
+        protected override Gift CreateEntity()
+            => new Gift
             {
                 Title = Guid.NewGuid().ToString(),
                 Description = Guid.NewGuid().ToString(),
