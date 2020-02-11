@@ -24,7 +24,7 @@ namespace SecretSanta.Api.Tests.Controllers
     {
         protected abstract BaseApiController<TDto, TInputDto> CreateController(TService service);
 
-        protected abstract TDto CreateEntity();
+        protected abstract TDto CreateDto();
         private IMapper Mapper { get; } = AutomapperConfigurationProfile.CreateMapper();
 
         [TestMethod]
@@ -40,9 +40,9 @@ namespace SecretSanta.Api.Tests.Controllers
             Mock<TService> service = new Mock<TService>();
             List<TDto> getValues = new List<TDto>
             {
-                CreateEntity(),
-                CreateEntity(),
-                CreateEntity()
+                CreateDto(),
+                CreateDto(),
+                CreateDto()
             };
             service.Setup(service => service.FetchAllAsync())
                 .Returns(Task.FromResult(getValues));
@@ -73,7 +73,7 @@ namespace SecretSanta.Api.Tests.Controllers
         public async Task Get_WhenEntityExists_ReturnsItem()
         {
             Mock<TService> service = new Mock<TService>();
-            TDto entity = CreateEntity();
+            TDto entity = CreateDto();
             service.Setup(service => service.FetchByIdAsync(42))
                 .Returns(Task.FromResult(entity));
             BaseApiController<TDto, TInputDto> controller = CreateController(service.Object);
@@ -88,8 +88,8 @@ namespace SecretSanta.Api.Tests.Controllers
         [TestMethod]
         public async Task Put_UpdatesItem()
         {
-            TDto entity1 = CreateEntity();
-            TDto entity2 = CreateEntity();
+            TDto entity1 = CreateDto();
+            TDto entity2 = CreateDto();
             TInputDto entityInput = Mapper.Map<TDto, TInputDto>(entity2);
             Mock<TService> service = new Mock<TService>();
             service.Setup(service => service.UpdateAsync(entity1.Id, entityInput))
@@ -106,7 +106,7 @@ namespace SecretSanta.Api.Tests.Controllers
         [TestMethod]
         public async Task Post_InsertsItem()
         {
-            TDto entity = CreateEntity();
+            TDto entity = CreateDto();
             TInputDto entityInput = Mapper.Map<TDto, TInputDto>(entity);
             Mock<TService> service = new Mock<TService>();
             service.Setup(service => service.InsertAsync(entityInput))
@@ -132,7 +132,7 @@ namespace SecretSanta.Api.Tests.Controllers
         [TestMethod]
         public async Task Delete_WhenItemExists_ReturnsOk()
         {
-            TDto entity = CreateEntity();
+            TDto entity = CreateDto();
             Mock<TService> service = new Mock<TService>();
             service.Setup(service => service.DeleteAsync(entity.Id))
                 .Returns(Task.FromResult(true));

@@ -12,7 +12,7 @@ namespace SecretSanta.Api.Tests.Controllers
         protected override BaseApiController<User, UserInput> CreateController(IUserService service)
             => new UserController(service);
 
-        protected override User CreateEntity()
+        protected override User CreateDto()
             => new User
             {
                 FirstName = Guid.NewGuid().ToString(),

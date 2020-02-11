@@ -12,7 +12,7 @@ namespace SecretSanta.Api.Tests.Controllers
         protected override BaseApiController<Group, GroupInput> CreateController(IGroupService service)
             => new GroupController(service);
 
-        protected override Group CreateEntity() => new Group
+        protected override Group CreateDto() => new Group
         {
             Title = Guid.NewGuid().ToString(),
             Id = new Random().Next()
