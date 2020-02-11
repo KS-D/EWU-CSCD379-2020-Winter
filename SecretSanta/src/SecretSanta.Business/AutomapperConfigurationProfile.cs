@@ -16,11 +16,6 @@ namespace SecretSanta.Business
             
             CreateMap<Group, Dto.Group>();
             CreateMap<Dto.GroupInput, Group>();
-
-
-            
-            CreateMap<Gift, Gift>().ForMember(property => property.Id, option => option.Ignore());
-            CreateMap<User, User>().ForMember(property => property.Id, option => option.Ignore());
         }
 
         public static IMapper CreateMapper()
