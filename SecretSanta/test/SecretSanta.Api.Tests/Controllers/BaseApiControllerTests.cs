@@ -6,10 +6,8 @@ using SecretSanta.Api.Controllers;
 using SecretSanta.Business;
 using SecretSanta.Business.Dto;
 using SecretSanta.Business.Services;
-using SecretSanta.Data;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -122,6 +120,8 @@ namespace SecretSanta.Api.Tests.Controllers
         public async Task Delete_WhenItemDoesNotExist_ReturnsNotFound()
         {
             Mock<TService> service = new Mock<TService>();
+            service.Setup(service => service.DeleteAsync(It.IsAny<int>()))
+                .Returns(Task.FromResult(false));
             BaseApiController<TDto, TInputDto> controller = CreateController(service.Object);
 
             IActionResult result = await controller.Delete(1);
