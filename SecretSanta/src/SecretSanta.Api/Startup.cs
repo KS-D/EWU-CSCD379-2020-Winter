@@ -21,7 +21,7 @@ namespace SecretSanta.Api
         {
            services.AddDbContext<ApplicationDbContext>(options =>
                 options.EnableSensitiveDataLogging()
-                    .UseSqlite("Data Source=Blog.db"));
+                    .UseSqlite("Data Source=SecretSanta.db"));
 
             services.AddScoped<IGiftService, GiftService>();
             services.AddScoped<IUserService, UserService>();

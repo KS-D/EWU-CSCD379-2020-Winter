@@ -80,7 +80,7 @@ namespace SecretSanta.Api.Tests.Controllers
 
             IActionResult result = await controller.Get(42);
 
-            OkObjectResult okResult = result as OkObjectResult;
+            OkObjectResult okResult = (OkObjectResult)result;
             
             Assert.AreEqual(entity, okResult?.Value);
         }
