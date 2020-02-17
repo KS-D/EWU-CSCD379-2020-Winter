@@ -12,18 +12,61 @@ namespace SecretSanta.Web.Controllers
 {
     public class GroupsController : Controller
     {
+        private GroupClient Client { get; }
         public GroupsController(IHttpClientFactory clientFactory)
         {
             HttpClient httpClient = clientFactory?.CreateClient("SecretSantaApi") ?? throw new ArgumentNullException(nameof(clientFactory));
             Client = new GroupClient(httpClient);
         }
 
-        private GroupClient Client { get; }
 
         public async Task<IActionResult> Index()
         {
             ICollection<Group> groups = await Client.GetAllAsync();
             return View(groups);
         }
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Create(GroupInput giftInput)
+        {
+            ActionResult result = View(giftInput);
+
+            if (ModelState.IsValid)
+            {
+                var createdGroup = await Client.PostAsync(giftInput);
+                result = RedirectToAction(nameof(Index));
+            }
+
+            return result;
+        }
+
+        public async Task<ActionResult> Edit(int id)
+        {
+            var fetchedGroup = await Client.GetAsync(id);
+
+            return View(fetchedGroup);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Edit(int id, GroupInput giftInput)
+        {
+            var updatedAuthor = await Client.PutAsync(id, giftInput);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
+      
+        public async Task<ActionResult> Delete(int id)
+        { 
+            await Client.DeleteAsync(id);
+
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }

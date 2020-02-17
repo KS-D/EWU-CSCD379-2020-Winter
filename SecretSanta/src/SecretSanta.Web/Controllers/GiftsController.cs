@@ -10,13 +10,13 @@ namespace SecretSanta.Web.Controllers
 {
     public class GiftsController : Controller
     {
+        private GiftClient Client { get; }
         public GiftsController(IHttpClientFactory clientFactory)
         {
             HttpClient httpClient = clientFactory?.CreateClient("SecretSantaApi") ?? throw new ArgumentNullException(nameof(clientFactory));
             Client = new GiftClient(httpClient);
         }
 
-        private GiftClient Client { get; }
 
         public async Task<IActionResult> Index()
         {

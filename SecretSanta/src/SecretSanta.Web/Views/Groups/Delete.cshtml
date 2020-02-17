@@ -1,0 +1,27 @@
+﻿@model Gift
+
+<p>
+    <a asp-action="Delete">Delete</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th asp-display-name-for="Id"></th>
+            <th asp-display-name-for="Title"></th>
+            <th asp-display-name-for="Description"></th>
+            <th asp-display-name-for="Url"></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+            <tr>
+                <td asp-display-for="Id"></td>
+                <td asp-display-for="Title"></td>
+                <td asp-display-for="Description"></td>
+                <td asp-display-for="Url"></td>
+                <td>
+
+                </td>
+            </tr>
+    </tbody>
+</table>
