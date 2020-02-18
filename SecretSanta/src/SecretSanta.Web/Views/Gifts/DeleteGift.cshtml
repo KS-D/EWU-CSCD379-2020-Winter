@@ -3,7 +3,7 @@
 <p>
     <header>Delete Gift</header>
 </p>
-<form  asp-route="Delete" asp-route-id="Id">
+<form asp-controller="Gifts" asp-action="Delete" asp-route-id="@Model.Id">
     <table class="table">
         <thead>
         <tr>
@@ -24,7 +24,7 @@
     </table>
     <div class="field is-grouped">
         <div class="control">
-            <a asp-action="Delete" asp-route-id="@Model.Id" method="post" class="button is-primary">Delete</a>
+            <button class="button is-primary">Delete</button>
         </div>
         <div class="control">
             <a asp-action="Index" class="button is-light">Cancel</a>

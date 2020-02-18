@@ -73,7 +73,8 @@ namespace SecretSanta.Web.Controllers
 
             return View(group);
         }
-      
+     
+        [HttpPost]
         public async Task<ActionResult> Delete(int id)
         { 
             await Client.DeleteAsync(id);
