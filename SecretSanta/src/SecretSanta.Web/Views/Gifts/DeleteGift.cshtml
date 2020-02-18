@@ -1,0 +1,33 @@
+﻿@model Gift
+
+<p>
+    <header>Delete Gift</header>
+</p>
+<form  asp-route="Delete" asp-route-id="Id">
+    <table class="table">
+        <thead>
+        <tr>
+            <th asp-display-name-for="Id"></th>
+            <th asp-display-name-for="Title"></th>
+            <th asp-display-name-for="Description"></th>
+            <th asp-display-name-for="Url"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td asp-display-for="Id"></td>
+            <td asp-display-for="Title"></td>
+            <td asp-display-for="Description"></td>
+            <td asp-display-for="Url"></td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="field is-grouped">
+        <div class="control">
+            <a asp-action="Delete" asp-route-id="@Model.Id" method="post" class="button is-primary">Delete</a>
+        </div>
+        <div class="control">
+            <a asp-action="Index" class="button is-light">Cancel</a>
+        </div>
+    </div>
+</form>

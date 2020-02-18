@@ -2,28 +2,33 @@
 
 <form asp-route="Edit">
     <input type="hidden" asp-for="Id" />
+    <div asp-validation-summary="ModelOnly"></div>
     <div class="field">
         <label class="label" asp-for="Title">Title</label>
         <div class="control">
             <input class="input" type="text" asp-for="Title" />
+            <span asp-validation-for="Title"></span>
         </div>
     </div>
     <div class="field">
         <label class="label" asp-for="Description">Description</label>
         <div class="control">
             <input class="input" type="text" asp-for="Description" />
+            <span asp-validation-for="Description"></span>
         </div>
     </div>
     <div class="field">
         <label class="label" asp-for="Url">Url</label>
         <div class="control">
             <input class="input" type="text" asp-for="Url" />
+            <span asp-validation-for="Url"></span>
         </div>
     </div>
     <div class="field">
         <label class="label" asp-for="UserId">User Id</label>
         <div class="control">
             <input class="input" type="text" asp-for="UserId" />
+            <span asp-validation-for="UserId"></span>
         </div>
     </div>
     <div class="field is-grouped">

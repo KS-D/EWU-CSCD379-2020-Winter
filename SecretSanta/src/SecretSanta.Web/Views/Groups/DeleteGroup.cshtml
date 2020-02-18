@@ -1,0 +1,29 @@
+﻿@model Group
+
+<p>
+    <header>Delete Group</header>
+</p>
+<form asp-route="Delete" asp-route-id="Id">
+    <table class="table">
+        <thead>
+        <tr>
+            <th asp-display-name-for="Id"></th>
+            <th asp-display-name-for="Title"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td asp-display-for="Id"></td>
+            <td asp-display-for="Title"></td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="field is-grouped">
+        <div class="control">
+            <a asp-action="Delete" asp-route-id="@Model.Id" class="button is-primary">Delete</a>
+        </div>
+        <div class="control">
+            <a asp-action="Index" class="button is-light">Cancel</a>
+        </div>
+    </div>
+</form>

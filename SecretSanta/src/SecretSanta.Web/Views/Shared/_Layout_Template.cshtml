@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
     <!-- Stylesheets -->
-    
-    <link href="~/css/main.694ce3f03107603ec2cb.css" rel="stylesheet" />
-    
+    <% for (var filename in htmlWebpackPlugin.files.css) { %>
+    <link href="~<%= htmlWebpackPlugin.files.css[filename] %>" rel="stylesheet" />
+    <% } %>
     <!-- End Stylesheets -->
     <style>
     </style>
@@ -26,9 +26,9 @@
         @RenderBody()
 </div>
 <!-- Scripts -->
-
-<script src="~/js/main.694ce3f03107603ec2cb.js"></script>
-
+<% for (var chunk in htmlWebpackPlugin.files.chunks) { %>
+<script src="~<%= htmlWebpackPlugin.files.chunks[chunk].entry %>"></script>
+<% } %>
 <!-- End Scripts -->
 @RenderSection("scripts", required: false)
 </body>
