@@ -5,9 +5,10 @@
   "scripts": {
     "build:dev": "webpack --mode development --watch",
     "build:prod": "webpack --mode production",
-    "test": "mocha -r ts-node/register -r ignore-styles -r jsdom-global/register scripts/**/*.spec.ts"
+    "test": "mocha -r ts-node/register scripts/**/*.spec.ts"
   },
   "dependencies": {
+    "@types/es6-promise": "^3.3.0",
     "bulma": "0.8.0",
     "chai-http": "^4.3.0",
     "node-fetch": "^2.6.0"

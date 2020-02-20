@@ -1,18 +1,22 @@
-﻿import { GiftClient, Gift, GiftInput } from "./secretsanta-client"
+﻿import { GiftClient, Gift, GiftInput, IGiftClient } from "./secretsanta-client"
 
 export class ListGift
 {
-    async getAllGifts(): Promise<Gift[]> {
-        var client = new GiftClient();
-        var gifts = await client.getAll();
+    giftClient : IGiftClient;
+
+    constructor(giftClient : IGiftClient = new GiftClient()){
+        this.giftClient = giftClient;
+    };
+
+    async getAllGifts(){
+        var gifts = await this.giftClient.getAll();
         return gifts;
     }
 
-    async fakeGiftLists(): Promise<Gift[]> {
-        var client = new GiftClient();
+    async fakeGiftLists(){
         var gifts = await this.getAllGifts();
         (gifts).forEach( gift => {
-            client.delete(gift.id);
+            this.giftClient.delete(gift.id);
         });
         let fakeGifts : Gift[] = [
                                     new Gift({
