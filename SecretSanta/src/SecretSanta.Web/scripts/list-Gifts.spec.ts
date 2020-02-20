@@ -1,7 +1,8 @@
 ﻿import { ListGift } from "./list-Gifts"
 
 import { expect } from "chai"
-
+import chai from "chai";
+import chaiHttp from "chai-http"
 import 'mocha';
 
 describe('GetAllGifts', () => {
