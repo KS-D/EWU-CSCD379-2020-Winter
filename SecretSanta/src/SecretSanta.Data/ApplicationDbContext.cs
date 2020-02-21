@@ -32,6 +32,17 @@ namespace SecretSanta.Data
 
             modelBuilder?.Entity<UserGroup>().HasOne(ug => ug.User).WithMany(u => u.UserGroups).HasForeignKey(ug => ug.UserId);
             modelBuilder?.Entity<UserGroup>().HasOne(ug => ug.Group).WithMany(u => u.UserGroups).HasForeignKey(ug => ug.GroupId);
+
+            var user = new User("Inigo", "Montoya")
+            {
+                CreatedBy = "Kyle Smith",
+                ModifiedBy = "Kyle Zmith"
+            };
+            var userType = typeof(User);
+            var propertyInfo = userType.GetProperty("Id");
+            propertyInfo!.SetValue(user, 1);
+
+            modelBuilder?.Entity<User>().HasData(user);
         }
 
         public override int SaveChanges()

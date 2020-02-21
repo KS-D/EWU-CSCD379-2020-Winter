@@ -36,7 +36,7 @@ namespace SecretSanta.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                var createdUser = await Client.PostAsync(giftInput);
+                await Client.PostAsync(giftInput);
 
                 result = RedirectToAction(nameof(Index));
             }
@@ -58,7 +58,7 @@ namespace SecretSanta.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                var updatedGift = await Client.PutAsync(id, giftInput);
+                await Client.PutAsync(id, giftInput);
 
                 result = RedirectToAction(nameof(Index));
             }
@@ -101,6 +101,11 @@ namespace SecretSanta.Web.Controllers
             }
 
             return result;
+        }
+
+        public IActionResult ListGifts()
+        {
+            return View();
         }
     }
 }

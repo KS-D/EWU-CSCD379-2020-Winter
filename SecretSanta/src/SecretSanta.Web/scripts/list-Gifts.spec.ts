@@ -1,72 +1,50 @@
 ﻿import { ListGift } from "./list-Gifts"
 import { expect } from "chai"
 import 'mocha';
-import { IGiftClient, Gift } from "./secretsanta-client";
+import { IGiftClient, Gift, GiftInput } from "./secretsanta-client";
+import { SampleGifts } from "./SampleGifts";
+import { ResolvePlugin } from "webpack";
 
-describe('GetAllGifts', () => {
-    it('should return all gifts', async () =>{
+describe('getAllGifts', () => {
+    it('should return all gifts', async () => {
         const display = new ListGift(new MockGiftClient());
         const actual = await display.getAllGifts();
         expect(actual.length).to.equal(5);
     })
 });
 
-describe('fakeGiftLists', () => {
-    it('should return all gifts', async () =>{
-        const display = new ListGift(new MockGiftClient());
-        const actual = await display.fakeGiftLists();
-        expect(actual.length).to.equal(5);
+describe('generateGiftList', () => {
+    it('delete the 5 existing gifts and add 5 gifts', async () =>{
+        let mockGiftClient = new MockGiftClient();
+        const display = new ListGift(mockGiftClient);
+        await display.generateGiftList();
+        expect(mockGiftClient.timesDeleteCalled).to.equal(5);
+        expect(mockGiftClient.timesPostCalled).to.equal(5);
     })
 })
 
 class MockGiftClient implements IGiftClient{
+    timesPostCalled : number = 0;
+    timesDeleteCalled : number = 0;
     getAll(): Promise<import("./secretsanta-client").Gift[]> {
-        let fakeGifts : Gift[] = [
-                                    new Gift({
-                                                id: 1, 
-                                                title: "Princess Bride: Movie", 
-                                                description: "pretty good", 
-                                                url: "www.movie.com", 
-                                                userId: 1
-                                            }), 
-                                    new Gift({
-                                                id: 2, 
-                                                title: "Princess Bride: Book", 
-                                                description: "pretty good", 
-                                                url: "www.book.com", 
-                                                userId: 1
-                                            }),
-                                    new Gift({
-                                                id: 3, 
-                                                title: "Six Fingered Glove", 
-                                                description: "It has six fingers", 
-                                                url: "www.specialgloves.com",
-                                                 userId: 1
-                                            }),
-                                    new Gift({
-                                                id: 4,
-                                                title: "Iocane powder",
-                                                description: "You can train yourself to" +
-                                                              "be immune to this poison",
-                                                url: "www.superdeadly.com",
-                                                userId: 1
-                                            }), 
-                                    new Gift({
-                                                id: 5,
-                                                title: "R.O.U.S.",
-                                                description: "It is a rodent of unusual size",
-                                                url: "www.fireswamp.com", 
-                                                userId: 1
-                                            })
-                                ];
-
         return new Promise( resolve => {
-            resolve(fakeGifts);
+            resolve(SampleGifts());
         });
-    }    
-    post(entity: import("./secretsanta-client").GiftInput): Promise<import("./secretsanta-client").Gift> {
-        throw new Error("Method not implemented.");
     }
+
+    post(entity: import("./secretsanta-client").GiftInput): Promise<import("./secretsanta-client").Gift> {
+        this.timesPostCalled++;
+        let gift : Gift = new Gift({id: this.timesPostCalled,
+                                    title: entity.title, 
+                                    description: entity.description, 
+                                    url: entity.url , 
+                                    userId: entity.userId });
+        
+        return new Promise( resolve => {
+            resolve(gift);
+        });
+    }
+
     get(id: number): Promise<import("./secretsanta-client").Gift> {
         throw new Error("Method not implemented.");
     }
@@ -74,6 +52,7 @@ class MockGiftClient implements IGiftClient{
         throw new Error("Method not implemented.");
     }
     delete(id: number): Promise<void> {
+        this.timesDeleteCalled++;
         return;
     }
 

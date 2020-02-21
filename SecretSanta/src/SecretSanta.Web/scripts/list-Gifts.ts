@@ -1,4 +1,5 @@
-﻿import { GiftClient, Gift, GiftInput, IGiftClient } from "./secretsanta-client"
+﻿import { GiftClient, IGiftClient } from "./secretsanta-client"
+import { SampleGifts } from "./SampleGifts";
 
 export class ListGift
 {
@@ -13,50 +14,26 @@ export class ListGift
         return gifts;
     }
 
-    async fakeGiftLists(){
+    async generateGiftList(){
         var gifts = await this.getAllGifts();
         (gifts).forEach( gift => {
             this.giftClient.delete(gift.id);
         });
-        let fakeGifts : Gift[] = [
-                                    new Gift({
-                                                id: 1, 
-                                                title: "Princess Bride: Movie", 
-                                                description: "pretty good", 
-                                                url: "www.movie.com", 
-                                                userId: 1
-                                            }), 
-                                    new Gift({
-                                                id: 2, 
-                                                title: "Princess Bride: Book", 
-                                                description: "pretty good", 
-                                                url: "www.book.com", 
-                                                userId: 1
-                                            }),
-                                    new Gift({
-                                                id: 3, 
-                                                title: "Six Fingered Glove", 
-                                                description: "It has six fingers", 
-                                                url: "www.specialgloves.com",
-                                                 userId: 1
-                                            }),
-                                    new Gift({
-                                                id: 4,
-                                                title: "Iocane powder",
-                                                description: "You can train yourself to" +
-                                                              "be immune to this poison",
-                                                url: "www.superdeadly.com",
-                                                userId: 1
-                                            }), 
-                                    new Gift({
-                                                id: 5,
-                                                title: "R.O.U.S.",
-                                                description: "It is a rodent of unusual size",
-                                                url: "www.fireswamp.com", 
-                                                userId: 1
-                                            })
-                                ];
+        
+        let fakeGiftLists = SampleGifts();
+        fakeGiftLists.forEach( gift => {
+            this.giftClient.post(gift);
+        });
+    }
 
-        return fakeGifts;
+    async renderGifts() {
+       console.log('hello world');
+       var gifts = await this.getAllGifts();
+       const itemList = document.getElementById("giftList");
+       gifts.forEach( gift => {
+           const listItem = document.createElement("li");
+           listItem.textContent = `${gift.id}:${gift.title}:${gift.description}:${gift.url}:${gift.url}`
+           itemList.append(listItem);
+       }) 
     }
 }

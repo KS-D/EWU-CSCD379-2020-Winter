@@ -123,6 +123,18 @@ namespace SecretSanta.Data.Migrations
                     b.HasIndex("SantaId");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedBy = "Kyle Smith",
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Inigo",
+                            LastName = "Montoya",
+                            ModifiedBy = "Kyle Zmith",
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("SecretSanta.Data.UserGroup", b =>

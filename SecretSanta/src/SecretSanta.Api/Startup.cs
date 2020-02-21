@@ -22,6 +22,16 @@ namespace SecretSanta.Api
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
+            });
+
             services.AddControllers();
             services.AddSwaggerDocument();
 
@@ -48,6 +58,7 @@ namespace SecretSanta.Api
 
             app.UseOpenApi();
             app.UseSwaggerUi3();
+            app.UseCors();
 
             app.UseEndpoints(endpoints =>
             {
