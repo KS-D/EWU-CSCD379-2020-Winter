@@ -1,3 +1,7 @@
-﻿import '../styles/site.scss';
+﻿import '../styles/site.scss'
 
-import { SampleGifts } from "./SampleGifts"
+import { ListGift } from "./list-Gifts"
+
+let listgift = new ListGift();
+listgift.generateGiftList();
+listgift.renderGifts();

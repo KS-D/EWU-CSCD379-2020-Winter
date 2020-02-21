@@ -27,7 +27,6 @@ export class ListGift
     }
 
     async renderGifts() {
-       console.log('hello world');
        var gifts = await this.getAllGifts();
        const itemList = document.getElementById("giftList");
        gifts.forEach( gift => {
