@@ -26,6 +26,11 @@ namespace SecretSanta.Api.Tests.Controllers
 
         protected override User Convert(UserInput dto)
         {
+            if (dto is null)
+            {
+                throw new ArgumentNullException(nameof(dto));
+            }
+
             return new User
             {
                 Id = NextId++,
