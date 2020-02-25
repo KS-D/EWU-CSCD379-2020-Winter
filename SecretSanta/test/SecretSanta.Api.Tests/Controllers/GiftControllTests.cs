@@ -27,6 +27,10 @@ namespace SecretSanta.Api.Tests.Controllers
         private int NextId { get; set; } 
         protected override Gift Convert(GiftInput dto)
         {
+            if (dto is null)
+            {
+                throw new ArgumentNullException(nameof(dto));
+            }
             return new Gift
             {
                 Id = NextId++,
