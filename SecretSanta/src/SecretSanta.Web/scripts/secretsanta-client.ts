@@ -246,7 +246,7 @@ export class GroupClient implements IGroupClient {
 
     constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
         this.http = http ? http : <any>window;
-        this.baseUrl = baseUrl ? baseUrl : "";
+        this.baseUrl = baseUrl ? baseUrl : "https://localhost:44388";
     }
 
     getAll(): Promise<Group[]> {
@@ -470,7 +470,7 @@ export class UserClient implements IUserClient {
 
     constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
         this.http = http ? http : <any>window;
-        this.baseUrl = baseUrl ? baseUrl : "";
+        this.baseUrl = baseUrl ? baseUrl : "https://localhost:44388";
     }
 
     getAll(): Promise<User[]> {
