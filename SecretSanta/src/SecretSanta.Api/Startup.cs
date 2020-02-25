@@ -33,7 +33,15 @@ namespace SecretSanta.Api
             });
 
             services.AddControllers();
-            services.AddSwaggerDocument();
+            services.AddSwaggerDocument(settings =>
+            {
+                settings.PostProcess = document =>
+                {
+                    document.Info.Version = "v1";
+                    document.Info.Title = "Example API";
+                    document.Info.Description = "REST API for example.";
+                };
+            });
 
             services.AddScoped<IGiftService, GiftService>();
             services.AddScoped<IUserService, UserService>();
