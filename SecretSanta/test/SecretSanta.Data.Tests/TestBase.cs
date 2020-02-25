@@ -40,6 +40,7 @@ namespace SecretSanta.Data.Tests
             using (var context = new ApplicationDbContext(Options))
             {
                 context.Database.EnsureCreated();
+
             }
         }
 

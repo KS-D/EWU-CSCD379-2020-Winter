@@ -49,14 +49,14 @@ namespace SecretSanta.Business.Tests
             IEntityService<TDto, TInputDto> service = GetService(dbContext, Mapper);
 
             // Act
-            bool wasRemoved = await service.DeleteAsync(1);
+            bool wasRemoved = await service.DeleteAsync(2);
 
             // Assert
             Assert.IsFalse(wasRemoved);
         }
 
         [TestMethod]
-        public async Task FetchAllAsync_ReturnsAllItems()
+        public virtual async Task FetchAllAsync_ReturnsAllItems()
         {
             // Arrange
             TEntity item1 = CreateEntity();
@@ -111,7 +111,7 @@ namespace SecretSanta.Business.Tests
             IEntityService<TDto, TInputDto> service = GetService(dbContext, Mapper);
 
             // Act
-            TDto found = await service.FetchByIdAsync(1);
+            TDto found = await service.FetchByIdAsync(2);
 
             // Assert
             Assert.IsNull(found);
@@ -164,7 +164,7 @@ namespace SecretSanta.Business.Tests
             TInputDto newEntity = CreateInputDto();
 
             // Act
-            TDto? updated = await service.UpdateAsync(1, newEntity);
+            TDto? updated = await service.UpdateAsync(2, newEntity);
 
             // Assert
             Assert.IsNull(updated);

@@ -28,9 +28,9 @@ namespace SecretSanta.Data.Tests
             {
                 var users = await dbContext.Users.ToListAsync();
 
-                Assert.AreEqual(1, users.Count);
-                Assert.AreEqual("Inigo", users[0].FirstName);
-                Assert.AreEqual("Montoya", users[0].LastName);
+                Assert.AreEqual(2, users.Count);
+                Assert.AreEqual("Inigo", users[1].FirstName);
+                Assert.AreEqual("Montoya", users[1].LastName);
             }
         }
 
@@ -52,9 +52,9 @@ namespace SecretSanta.Data.Tests
             {
                 var users = await dbContext.Users.ToListAsync();
 
-                Assert.AreEqual(1, users.Count);
-                Assert.AreEqual("imontoya", users[0].CreatedBy);
-                Assert.AreEqual("imontoya", users[0].ModifiedBy);
+                Assert.AreEqual(2, users.Count);
+                Assert.AreEqual("imontoya", users[1].CreatedBy);
+                Assert.AreEqual("imontoya", users[1].ModifiedBy);
             }
         }
 
@@ -78,9 +78,9 @@ namespace SecretSanta.Data.Tests
             {
                 var users = await dbContext.Users.ToListAsync();
 
-                Assert.AreEqual(1, users.Count);
-                users[0].FirstName = "Princess";
-                users[0].LastName = "Buttercup";
+                Assert.AreEqual(2, users.Count);
+                users[1].FirstName = "Princess";
+                users[1].LastName = "Buttercup";
 
                 await dbContext.SaveChangesAsync().ConfigureAwait(false);
             }
@@ -90,9 +90,9 @@ namespace SecretSanta.Data.Tests
             {
                 var users = await dbContext.Users.ToListAsync();
 
-                Assert.AreEqual(1, users.Count);
-                Assert.AreEqual("imontoya", users[0].CreatedBy);
-                Assert.AreEqual("pbuttercup", users[0].ModifiedBy);
+                Assert.AreEqual(2, users.Count);
+                Assert.AreEqual("imontoya", users[1].CreatedBy);
+                Assert.AreEqual("pbuttercup", users[1].ModifiedBy);
             }
         }
 
@@ -117,9 +117,9 @@ namespace SecretSanta.Data.Tests
             {
                 var users = await dbContext.Users.Include(u => u.UserGroups).ThenInclude(ug => ug.Group).ToListAsync();
 
-                Assert.AreEqual(1, users.Count);
-                Assert.AreEqual(1, users[0].UserGroups.Count);
-                Assert.AreEqual("Enchanted Forest", users[0].UserGroups[0].Group.Title);
+                Assert.AreEqual(2, users.Count);
+                Assert.AreEqual(1, users[1].UserGroups.Count);
+                Assert.AreEqual("Enchanted Forest", users[1].UserGroups[0].Group.Title);
             }
         }
 
@@ -146,8 +146,8 @@ namespace SecretSanta.Data.Tests
             {
                 var users = await dbContext.Users.Include(u => u.Gifts).ToListAsync();
 
-                Assert.AreEqual(1, users.Count);
-                Assert.AreEqual(2, users[0].Gifts.Count);
+                Assert.AreEqual(2, users.Count);
+                Assert.AreEqual(2, users[1].Gifts.Count);
             }
         }
 
