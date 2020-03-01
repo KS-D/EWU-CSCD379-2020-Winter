@@ -5,6 +5,7 @@
             <thead>
                 <tr>
                     <th>Title</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>

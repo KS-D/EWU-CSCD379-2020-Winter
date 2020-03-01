@@ -1,69 +1,81 @@
 <template>
     <div>
-        <button class="button" @click="createGroup()">Create New</button>
+        <button class="button" @click="createUser()">Create New</button>
         <table class="table">
             <thead>
                 <tr>
-                    <th>Title</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="group in groups" :id="group.id">
-                    <td>{{group.title}}</td>
+                <tr v-for="user in users" :id="user.id">
+                    <td>{{user.firstName}}</td>
+                    <td>{{user.lastName}}</td>
                     <td>
-                        <button class="button" @click='setGroup(group)'>Edit</button>
-                        <button class="button" @click='deleteGroup(group)'>Delete</button>
+                        <button class="button" @click='setUser(user)'>Edit</button>
+                        <button class="button" @click='deleteUser(user)'>Delete</button>
                     </td>
                 </tr>
             </tbody>
         </table>
-        <groups-details-component v-if="selectedGroup != null"
-                                  :group="selectedGroup"
-                                  @group-saved="refreshGroups()"></groups-details-component>
+        <users-details-component v-if="selectedUser != null"
+                                  :user="selectedUser"
+                                  @user-saved="refreshUsers()"></users-details-component>
     </div>
 </template>
 <script lang="ts">
     import {Vue, Component } from 'vue-property-decorator'
-    import {Group, GroupClient } from '../../secretsanta-client' 
-    import groupsDetailsComponent from './groupDetailsComponent.vue'
+    import {User, UserClient } from '../../secretsanta-client' 
+    import UsersDetailsComponent from './usersDetailComponent.vue'
     @Component({
         components: {
-            groupsDetailsComponent
+            UsersDetailsComponent
         }
     })
-    export default class GroupComponent extends Vue {
-        groups : Group[] = null;
-        selectedGroup: Group = null;
+    export default class UsersComponent extends Vue {
+        users : User[] = null;
+        selectedUser: User = null;
 
-        async loadGroups(){
-            let groupClient = new GroupClient();
-            this.groups = await groupClient.getAll(); 
+        async loadUsers(){
+            let userClient = new UserClient;
+            this.users = await userClient.getAll(); 
+            console.log('hello world');
         }
 
-        createGroup(){
-            this.selectedGroup = <Group>{};
+        createUser(){
+            this.selectedUser = <User>{};
         }
 
         async mounted(){
-            await this.loadGroups();
+            await this.loadUsers();
         }
 
-        setGroup(group : Group){
-            this.selectedGroup = group;
+        setUser(user : User){
+            this.selectedUser = user;
         }
 
-        async refreshGroups(){
-            this.selectedGroup = null;
-            await this.loadGroups();
+        async refreshUsers(){
+            this.selectedUser = null;
+            await this.loadUsers();
         }
         
-        async deleteGroup(group : Group){
-            let groupClient = new GroupClient();
-            if (confirm(`Are you sure you want to delete ${group.title}`)) {
-                await groupClient.delete(group.id);
+        async deleteUser(user : User){
+            let userClient = new UserClient();
+            if (confirm(`Are you sure you want to delete ${user.firstName} ${user.lastName}`)) {
+                await userClient.delete(user.id);
             }
 
-            await this.refreshGroups();
+            await this.refreshUsers();
         }
     }
+
+
+
+
+
+
+
+
 </script>

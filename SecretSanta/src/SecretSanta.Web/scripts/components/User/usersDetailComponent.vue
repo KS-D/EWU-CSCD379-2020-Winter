@@ -1,32 +1,20 @@
 <template>
     <div>
         <div class="field">
-            <label class="label">Title</label>
+            <label class="label">First Name</label>
             <div class="control">
-                <input class="input" type="text" v-model="clonedGift.title" />
+                <input class="input" type="text" v-model="clonedUser.firstName" />
             </div>
         </div>
         <div class="field">
-            <label class="label">Description</label>
+            <label class="label">Last Name</label>
             <div class="control">
-                <input class="input" type="text" v-model="clonedGift.description" />
-            </div>
-        </div>
-        <div class="field">
-            <label class="label">Url</label>
-            <div class="control">
-                <input class="input" v-model="clonedGift.url" />
-            </div>
-        </div>
-        <div class="field">
-            <label class="label">User Id</label>
-            <div class="control">
-                <input class="input" v-model.number="clonedGift.userId" />
+                <input class="input" type="text" v-model="clonedUser.lastName" />
             </div>
         </div>
         <div class="field is-grouped">
             <div class="control">
-                <button id="submit" class="button is-primary" @click.once="saveGift">Submit</button>
+                <button id="submit" class="button is-primary" @click.once="saveUser">Submit</button>
             </div>
             <div class="control">
                 <a class="button is-light" @click="cancelEdit">Cancel</a>
@@ -37,34 +25,34 @@
 
 <script lang="ts">
     import { Vue, Component, Prop, Emit } from 'vue-property-decorator'
-    import { Gift, GiftClient } from '../../secretsanta-client' 
+    import { User, UserClient } from '../../secretsanta-client' 
     @Component
-    export default class GiftsDetailsComponent extends Vue {
+    export default class UsersDetailsComponent extends Vue {
         @Prop()
-        gift: Gift;
-        clonedGift: Gift = <Gift>{};
+        user: User;
+        clonedUser: User = <User>{};
 
         constructor() {
             super();
         }
 
         mounted() {
-            let tempGift = { ...this.gift };
-            this.clonedGift = <Gift>tempGift;
+            let tempUser = { ...this.user };
+            this.clonedUser = <User>tempUser;
         }
 
-        @Emit('gift-saved')
-        async saveGift() {
-            let giftClient = new GiftClient();
-            if (this.clonedGift.id > 0) {
-                await giftClient.put(this.clonedGift.id, this.clonedGift);
+        @Emit('user-saved')
+        async saveUser() {
+            let userClient = new UserClient();
+            if (this.clonedUser.id > 0) {
+                await userClient.put(this.clonedUser.id, this.clonedUser);
             }
             else {
-                await giftClient.post(this.clonedGift);
+                await userClient.post(this.clonedUser);
             }
         }
 
-        @Emit('gift-saved')
+        @Emit('user-saved')
         cancelEdit() {
 
         }
