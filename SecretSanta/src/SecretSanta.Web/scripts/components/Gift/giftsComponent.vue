@@ -3,7 +3,7 @@
         <button class="button" @click="createGift()">Create New</button>
         <table class="table">
             <thead>
-                <tr>
+                <tr class="tbl-header">
                     <th>Title</th>
                     <th>Description</th>
                     <th>Url</th>

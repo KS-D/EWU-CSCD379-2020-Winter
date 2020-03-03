@@ -2,7 +2,7 @@
     <div>
         <button class="button" @click="createGroup()">Create New</button>
         <table class="table">
-            <thead>
+            <thead class="tbl-header">
                 <tr>
                     <th>Title</th>
                     <th></th>

@@ -2,7 +2,7 @@
     <div>
         <button class="button" @click="createUser()">Create New</button>
         <table class="table">
-            <thead>
+            <thead class="tbl-header">
                 <tr>
                     <th>First Name</th>
                     <th>Last Name</th>

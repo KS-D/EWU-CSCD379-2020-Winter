@@ -16,6 +16,12 @@ $grey-dark: $brown;
 $grey-light: $beige-light;
 $primary: $purple;
 $link: $pink;
+$button-background-color: $pink;
+$button-border-color: $beige-lighter;
+$background: #181a1b;
+$body-background-color: $background;
+$footer-background-color: $background;
+$text: $beige-light;
 
 // Update some of Bulma's component variables
 $control-border-width: 2px;
@@ -23,6 +29,12 @@ $input-background-color: $beige-lighter;
 $input-border-color: transparent;
 $input-shadow: none;
 
+$table-background-color: transparent;
+$table-color: $beige-light !default;
+$table-header-background-color: $beige-light;
+
 $navbar-item-color: pink;
+$navbar-background-color: $background;
+
 
 @import "~bulma/bulma";
