@@ -12,96 +12,11 @@ namespace SecretSanta.Web.Controllers
 {
     public class UsersController : Controller
     {
-        public UsersController(IHttpClientFactory clientFactory)
-        {
-            HttpClient httpClient = clientFactory?.CreateClient("SecretSantaApi") ?? throw new ArgumentNullException(nameof(clientFactory));
-            Client = new UserClient(httpClient);
-        }
+        public UsersController() { }
 
-        private UserClient Client { get; }
-
-        public async Task<IActionResult> Index()
-        {
-            ICollection<User> users = await Client.GetAllAsync();
-            return View(users);
-        }
-
-        public ActionResult Create()
+        public IActionResult Index()
         {
             return View();
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> Create(UserInput userInput)
-        {
-            ActionResult result = View(userInput);
-
-            if (ModelState.IsValid)
-            {
-                var createdUser = await Client.PostAsync(userInput);
-
-                result = RedirectToAction(nameof(Index));
-            }
-
-            return result;
-        }
-
-        public async Task<ActionResult> Edit(int id)
-        {
-            var fetchedUser = await Client.GetAsync(id);
-
-            return View(fetchedUser);
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> Edit(int id, UserInput userInput)
-        {
-            ActionResult result = null!;
-
-            if (ModelState.IsValid)
-            {
-                var updatedUser = await Client.PutAsync(id, userInput);
-
-                result =  RedirectToAction(nameof(Index));
-            }
-            else
-            {
-                var user = new User
-                {
-                    Id = id,
-                    FirstName = userInput?.FirstName,
-                    LastName = userInput?.LastName,
-                    SantaId = userInput?.SantaId
-                };
-
-                result = View(user);
-            }
-
-            return result;
-        }
-
-        public async Task<ActionResult> Delete(int id)
-        {
-            var fetchedUser = await Client.GetAsync(id);
-
-            return View(fetchedUser);
-        }
-        [HttpPost]
-        public async Task<ActionResult> Delete(User user)
-        {
-            ActionResult result = null!;
-            if (user != null)
-            {
-                await Client.DeleteAsync(user.Id);
-
-                result = RedirectToAction(nameof(Index));
-            }
-            else
-            {
-                result = View(user);
-            }
-
-            return result;
         }
     }
 }
