@@ -94,6 +94,7 @@ namespace SecretSanta.Web.Tests
             Driver.Manage().Window.Maximize();
 
             var GetGiftList = Driver.FindElements(By.TagName("tr"));
+            int GiftListCount = GetGiftList.Count;
 
             var CreateGiftBtn = Driver.FindElement(By.CssSelector("body > section > div > div > button"));
             CreateGiftBtn.Click();
@@ -110,8 +111,9 @@ namespace SecretSanta.Web.Tests
             WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(20));
             wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("body > section > div > div > button")));
             var UpdatedGiftList = Driver.FindElements(By.TagName("tr"));
+            int UpdatedGiftListCount = UpdatedGiftList.Count;
 
-            //Assert.IsTrue(GetGiftList.Count < UpdatedGiftList.Count);
+            Assert.IsTrue(GiftListCount < UpdatedGiftListCount);
             Screenshot image = ((ITakesScreenshot) Driver).GetScreenshot();
             image.SaveAsFile("../../../ScreenShot.png", ScreenshotImageFormat.Png);
         }
