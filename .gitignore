@@ -281,3 +281,6 @@ __pycache__/
 
 # Visual Studio code
 .vscode/
+
+# Photo
+*.png
