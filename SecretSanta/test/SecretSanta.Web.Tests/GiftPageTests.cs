@@ -36,8 +36,8 @@ namespace SecretSanta.Web.Tests
         {
             if (testContext is null) throw new ArgumentNullException(nameof(testContext));
 
-            ApiHostProcess = Process.Start("dotnet.exe", $@"run -p ..\..\..\..\..\src\SecretSanta.Api\SecretSanta.Api.csproj --urls={ApiURL}");
-            WebHostProcess = Process.Start("dotnet.exe", $@"run -p ..\..\..\..\..\src\SecretSanta.Web\SecretSanta.Web.csproj --urls={AppURL}");
+            ApiHostProcess = Process.Start("dotnet", $@"run -p ..\..\..\..\..\src\SecretSanta.Api\SecretSanta.Api.csproj --urls={ApiURL}");
+            WebHostProcess = Process.Start("dotnet", $@"run -p ..\..\..\..\..\src\SecretSanta.Web\SecretSanta.Web.csproj --urls={AppURL}");
 
         }
 
