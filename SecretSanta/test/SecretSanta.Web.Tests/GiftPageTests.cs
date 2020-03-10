@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
@@ -32,23 +33,22 @@ namespace SecretSanta.Web.Tests
         [ClassInitialize]
         public static void ClassInitialize(TestContext testContext)
         {
-            var path = testContext.DeploymentDirectory;
-            string apiPath = Path.GetFullPath(Path.Combine(path, @"../../../../../src/SecretSanta.Api/SecretSanta.Api.csproj"));
-            string webPath = Path.GetFullPath(Path.Combine(path, @"../../../../../src/SecretSanta.Web/SecretSanta.Web.csproj"));
+            if (testContext is null) throw new ArgumentNullException(nameof(testContext));
 
-            Console.WriteLine(apiPath);
-            Console.WriteLine(webPath);
+            string apiPath = @"../../../../../src/SecretSanta.Api/SecretSanta.Api.csproj";
+            string webPath = @"../../../../../src/SecretSanta.Web/SecretSanta.Web.csproj";
             
             ApiHostProcess = Process.Start("dotnet.exe", $"run -p {apiPath} --urls={ApiURL}");
             WebHostProcess = Process.Start("dotnet.exe", $"run -p {webPath} --urls={AppURL}");
 
-            Console.WriteLine("did the process start?");
         }
 
         [ClassCleanup]
         public static void ClassCleanUp()
         {
+            ApiHostProcess?.CloseMainWindow();
             ApiHostProcess?.Close();
+            WebHostProcess?.CloseMainWindow();
             WebHostProcess?.Close();
         }
 
@@ -108,8 +108,8 @@ namespace SecretSanta.Web.Tests
             Select.SelectByValue(user.Id.ToString());
             var SubmitBtn = Driver.FindElement(By.Id("submit"));
             SubmitBtn.Click();
-            WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(20));
-            wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("body > section > div > div > button")));
+            Thread.Sleep(5000); 
+            
             var UpdatedGiftList = Driver.FindElements(By.TagName("tr"));
             int UpdatedGiftListCount = UpdatedGiftList.Count;
 
