@@ -54,8 +54,9 @@ namespace SecretSanta.Web.Tests
         {
             var chromeOptions = new ChromeOptions();
             chromeOptions.AddArgument("--no-sandbox");
-            chromeOptions.AddArgument("--disable-dev-shm-usage")
-            Driver = new ChromeDriver();
+            chromeOptions.AddArgument("--disable-dev-shm-usage");
+
+            Driver = new ChromeDriver(chromeOptions);
             Driver.Manage().Timeouts().ImplicitWait = new TimeSpan(0, 0, 10);
             Driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(10);
         }
