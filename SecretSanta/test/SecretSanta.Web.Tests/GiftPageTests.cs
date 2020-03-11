@@ -38,7 +38,6 @@ namespace SecretSanta.Web.Tests
 
             ApiHostProcess = Process.Start("dotnet", $@"run -p ..\..\..\..\..\src\SecretSanta.Api\SecretSanta.Api.csproj --urls={ApiURL}");
             WebHostProcess = Process.Start("dotnet", $@"run -p ..\..\..\..\..\src\SecretSanta.Web\SecretSanta.Web.csproj --urls={AppURL}");
-
         }
 
         [ClassCleanup]
@@ -53,17 +52,10 @@ namespace SecretSanta.Web.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-
-            string browser = "Chrome";
-            switch (browser)
-            {
-                case "Chrome":
-                    Driver = new ChromeDriver();
-                    break;
-                default:
-                    Driver = new ChromeDriver();
-                    break;
-            }
+            var chromeOptions = new ChromeOptions();
+            chromeOptions.AddArgument("--no-sandbox");
+            chromeOptions.AddArgument("--disable-dev-shm-usage")
+            Driver = new ChromeDriver();
             Driver.Manage().Timeouts().ImplicitWait = new TimeSpan(0, 0, 10);
             Driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(10);
         }
@@ -119,7 +111,7 @@ namespace SecretSanta.Web.Tests
         [TestCleanup]
         public void TestCleanup()
         {
-            Driver.Quit();
+            Driver?.Quit();
         }
 
 
