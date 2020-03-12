@@ -41,7 +41,7 @@ steps:
     projects: |
       **/SecretSanta.Api.csproj
       **/SecretSanta.Web.csproj
-    arguments: 'configuration $(BuildConfiguration) --output "$(build.ArtifactStagingDirectory)"'
+    arguments: '--configuration $(BuildConfiguration) --output "$(build.ArtifactStagingDirectory)"'
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
