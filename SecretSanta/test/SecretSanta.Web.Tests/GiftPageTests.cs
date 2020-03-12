@@ -38,6 +38,8 @@ namespace SecretSanta.Web.Tests
 
             ApiHostProcess = Process.Start("dotnet", $@"run -p ..\..\..\..\..\src\SecretSanta.Api\SecretSanta.Api.csproj --urls={ApiURL}");
             WebHostProcess = Process.Start("dotnet", $@"run -p ..\..\..\..\..\src\SecretSanta.Web\SecretSanta.Web.csproj --urls={AppURL}");
+
+            ApiHostProcess.WaitForExit(1000);
         }
 
         [ClassCleanup]
@@ -55,7 +57,7 @@ namespace SecretSanta.Web.Tests
             var chromeOptions = new ChromeOptions();
             chromeOptions.AddArgument("--no-sandbox");
             chromeOptions.AddArgument("--disable-dev-shm-usage");
-            //chromeOptions.AddArgument("--headless");
+            chromeOptions.AddArgument("--headless");
 
             Driver = new ChromeDriver("./",chromeOptions);
             Driver.Manage().Timeouts().ImplicitWait = new TimeSpan(0, 0, 10);
