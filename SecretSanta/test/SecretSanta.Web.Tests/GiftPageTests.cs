@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -57,7 +58,6 @@ namespace SecretSanta.Web.Tests
             var chromeOptions = new ChromeOptions();
             chromeOptions.AddArgument("--no-sandbox");
             chromeOptions.AddArgument("--disable-dev-shm-usage");
-            chromeOptions.AddArgument("--headless");
             chromeOptions.AcceptInsecureCertificates = true;
 
             Driver = new ChromeDriver("./",chromeOptions);
@@ -89,28 +89,27 @@ namespace SecretSanta.Web.Tests
             User user = await AddUser();
             Driver.Navigate().GoToUrl(new Uri(AppURL + "Gifts"));
             Driver.Manage().Window.Maximize();
-
-            ReadOnlyCollection<IWebElement> GetGiftList = Driver.FindElements(By.TagName("tr"));
-            int GiftListCount = GetGiftList.Count;
+            string title = "A gift";
+            string description = "Look at this description";
+            string website = "www.Awebsite.com";
 
             IWebElement CreateGiftBtn = Driver.FindElement(By.CssSelector("body > section > div > div > button"));
             CreateGiftBtn.Click();
             ReadOnlyCollection<IWebElement> Inputs = Driver.FindElements(By.ClassName("input"));
             Assert.IsTrue(Inputs.Count == 3);
-            Inputs[0].SendKeys("A gift");
-            Inputs[1].SendKeys("Look at this description");
-            Inputs[2].SendKeys("www.Awebsite.com");
+            Inputs[0].SendKeys(title);
+            Inputs[1].SendKeys(description);
+            Inputs[2].SendKeys(website);
             SelectElement Select = new SelectElement(Driver.FindElement(By.TagName("select")));
             Assert.IsTrue(Select.Options.Count > 0);
             Select.SelectByValue(user.Id.ToString());
             IWebElement SubmitBtn = Driver.FindElement(By.Id("submit"));
             SubmitBtn.Click();
-            Thread.Sleep(15000);
+            Thread.Sleep(8000);
 
             ReadOnlyCollection<IWebElement> UpdatedGiftList = Driver.FindElements(By.TagName("tr"));
-            int UpdatedGiftListCount = UpdatedGiftList.Count;
-
-            Assert.IsTrue(GiftListCount < UpdatedGiftListCount);
+            
+            Assert.IsTrue(UpdatedGiftList.Count > 0);
             Screenshot ss = ((ITakesScreenshot)Driver).GetScreenshot();
             string path = Directory.GetCurrentDirectory() + "Screenshot.png";
             ss.SaveAsFile(path);
