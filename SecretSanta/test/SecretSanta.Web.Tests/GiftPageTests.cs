@@ -39,7 +39,7 @@ namespace SecretSanta.Web.Tests
             ApiHostProcess = Process.Start("dotnet", $@"run -p ..\..\..\..\..\src\SecretSanta.Api\SecretSanta.Api.csproj --urls={ApiURL}");
             WebHostProcess = Process.Start("dotnet", $@"run -p ..\..\..\..\..\src\SecretSanta.Web\SecretSanta.Web.csproj --urls={AppURL}");
 
-            ApiHostProcess.WaitForExit(1000);
+            ApiHostProcess.WaitForExit(10000);
         }
 
         [ClassCleanup]
