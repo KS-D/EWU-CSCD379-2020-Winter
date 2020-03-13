@@ -47,10 +47,8 @@ namespace SecretSanta.Web.Tests
         {
             ApiHostProcess?.CloseMainWindow();
             ApiHostProcess?.Close();
-            ApiHostProcess?.Kill();
             WebHostProcess?.CloseMainWindow();
             WebHostProcess?.Close();
-            WebHostProcess?.Kill();
         }
 
         [TestInitialize]
