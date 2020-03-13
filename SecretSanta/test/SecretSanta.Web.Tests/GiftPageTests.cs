@@ -67,7 +67,10 @@ namespace SecretSanta.Web.Tests
 
         private async Task<User> AddUser()
         {
-            using HttpClient httpClient = new HttpClient();
+            HttpClientHandler clientHandler = new HttpClientHandler();
+            clientHandler.ServerCertificateCustomValidationCallback = 
+                (sender, cert, chain, sslPolicyErrors) => { return true; };
+            using HttpClient httpClient = new HttpClient(clientHandler);
             httpClient.BaseAddress = new Uri(ApiURL);
             UserClient client = new UserClient(httpClient);
             UserInput user = new UserInput
