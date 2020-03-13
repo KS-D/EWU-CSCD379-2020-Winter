@@ -112,8 +112,10 @@ namespace SecretSanta.Web.Tests
             int UpdatedGiftListCount = UpdatedGiftList.Count;
 
             Assert.IsTrue(GiftListCount < UpdatedGiftListCount);
-            Screenshot image = ((ITakesScreenshot) Driver).GetScreenshot();
-            image.SaveAsFile("../../../ScreenShot.png", ScreenshotImageFormat.Png);
+            Screenshot ss = ((ITakesScreenshot)Driver).GetScreenshot();
+            string path = Directory.GetCurrentDirectory() + "Screenshot.png";
+            ss.SaveAsFile(path);
+            this.TestContext.AddResultFile( path); 
         }
 
         [TestCleanup]
