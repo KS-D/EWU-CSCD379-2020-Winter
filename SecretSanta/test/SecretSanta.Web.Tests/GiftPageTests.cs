@@ -105,7 +105,7 @@ namespace SecretSanta.Web.Tests
             Select.SelectByValue(user.Id.ToString());
             IWebElement SubmitBtn = Driver.FindElement(By.Id("submit"));
             SubmitBtn.Click();
-            Thread.Sleep(8000);
+            Thread.Sleep(15000);
 
             ReadOnlyCollection<IWebElement> UpdatedGiftList = Driver.FindElements(By.TagName("tr"));
             int UpdatedGiftListCount = UpdatedGiftList.Count;
