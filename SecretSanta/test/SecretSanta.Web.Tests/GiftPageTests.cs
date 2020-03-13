@@ -58,6 +58,7 @@ namespace SecretSanta.Web.Tests
             var chromeOptions = new ChromeOptions();
             chromeOptions.AddArgument("--no-sandbox");
             chromeOptions.AddArgument("--disable-dev-shm-usage");
+            chromeOptions.AddArgument("--headless");
             chromeOptions.AcceptInsecureCertificates = true;
 
             Driver = new ChromeDriver("./",chromeOptions);
