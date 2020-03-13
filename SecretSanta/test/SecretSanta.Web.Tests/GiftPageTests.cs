@@ -67,7 +67,7 @@ namespace SecretSanta.Web.Tests
 
         private async Task<User> AddUser()
         {
-            HttpClientHandler clientHandler = new HttpClientHandler();
+            using HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = 
                 (sender, cert, chain, sslPolicyErrors) => { return true; };
             using HttpClient httpClient = new HttpClient(clientHandler);
@@ -87,7 +87,6 @@ namespace SecretSanta.Web.Tests
         public async Task GiftPage_AddGift_Success()
         {
             User user = await AddUser();
-
             Driver.Navigate().GoToUrl(new Uri(AppURL + "Gifts"));
             Driver.Manage().Window.Maximize();
 
@@ -106,7 +105,7 @@ namespace SecretSanta.Web.Tests
             Select.SelectByValue(user.Id.ToString());
             IWebElement SubmitBtn = Driver.FindElement(By.Id("submit"));
             SubmitBtn.Click();
-            Thread.Sleep(7000);
+            Thread.Sleep(8000);
 
             ReadOnlyCollection<IWebElement> UpdatedGiftList = Driver.FindElements(By.TagName("tr"));
             int UpdatedGiftListCount = UpdatedGiftList.Count;
@@ -115,7 +114,7 @@ namespace SecretSanta.Web.Tests
             Screenshot ss = ((ITakesScreenshot)Driver).GetScreenshot();
             string path = Directory.GetCurrentDirectory() + "Screenshot.png";
             ss.SaveAsFile(path);
-            this.TestContext.AddResultFile( path); 
+            TestContext.AddResultFile(path); 
         }
 
         [TestCleanup]
