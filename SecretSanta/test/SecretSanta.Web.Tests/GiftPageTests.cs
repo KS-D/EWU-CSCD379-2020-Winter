@@ -61,8 +61,8 @@ namespace SecretSanta.Web.Tests
             chromeOptions.AcceptInsecureCertificates = true;
 
             Driver = new ChromeDriver("./",chromeOptions);
-            Driver.Manage().Timeouts().ImplicitWait = new TimeSpan(0, 0, 10);
-            Driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(10);
+            Driver.Manage().Timeouts().ImplicitWait = new TimeSpan(0, 0, 15);
+            Driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(15);
         }
 
         private async Task<User> AddUser()
