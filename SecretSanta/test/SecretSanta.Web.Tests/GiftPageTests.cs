@@ -109,8 +109,10 @@ namespace SecretSanta.Web.Tests
             Thread.Sleep(8000);
 
             ReadOnlyCollection<IWebElement> UpdatedGiftList = Driver.FindElements(By.TagName("tr"));
-            
             Assert.IsTrue(UpdatedGiftList.Count > 0);
+            var newestGift = UpdatedGiftList.Last();
+            var giftInfo = newestGift.FindElements(By.TagName("td"));
+            Assert.AreEqual((title, description, website),(giftInfo[1].Text, giftInfo[2].Text, giftInfo[3].Text));
             Screenshot ss = ((ITakesScreenshot)Driver).GetScreenshot();
             string path = Directory.GetCurrentDirectory() + "Screenshot.png";
             ss.SaveAsFile(path);
